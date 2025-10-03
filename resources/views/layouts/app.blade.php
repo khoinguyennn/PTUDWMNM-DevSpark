@@ -14,12 +14,12 @@
 
     <style>
         :root {
-            --primary-color: #8FDFFA;
+            --primary-color: #0BBAF4;
             --primary-dark: #5CB3D9;
             --secondary-color: #FF6B35;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-1: linear-gradient(135deg, #4fa8da 0%, #7dd3fc 100%);
+            --gradient-2: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            --gradient-3: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
             --text-dark: #2c3e50;
             --text-muted: #6c757d;
             --border-radius: 12px;
@@ -78,7 +78,7 @@
 
         .sidebar-menu a:hover,
         .sidebar-menu a.active {
-            background: rgba(143, 223, 250, 0.1);
+            background: rgba(11, 186, 244, 0.1);
             color: var(--primary-dark);
             border-right: 3px solid var(--primary-color);
         }
@@ -155,7 +155,7 @@
             outline: none;
             border-color: var(--primary-color);
             background: white;
-            box-shadow: 0 0 0 3px rgba(143, 223, 250, 0.1);
+            box-shadow: 0 0 0 3px rgba(11, 186, 244, 0.1);
         }
 
         .search-btn {
@@ -171,7 +171,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-dark);
+            color: white;
             transition: all 0.3s ease;
         }
 
@@ -186,7 +186,7 @@
             border-radius: 20px;
             padding: 8px 20px;
             font-weight: 600;
-            color: var(--text-dark);
+            color: white;
             transition: all 0.3s ease;
             font-size: 14px;
         }
@@ -210,7 +210,7 @@
         .btn-outline-primary:hover {
             background: var(--primary-color);
             border-color: var(--primary-color);
-            color: var(--text-dark);
+            color: white;
         }
 
         /* Main Content */
@@ -610,6 +610,68 @@
             display: none;
         }
 
+        /* Dropdown customization */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1.25rem;
+            font-size: 14px;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(11, 186, 244, 0.1);
+            color: var(--primary-dark);
+        }
+
+        .dropdown-header {
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 0.5rem 1.25rem;
+            margin-bottom: 0;
+        }
+
+        /* Flash messages */
+        .alert {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-error, .alert-danger {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(23, 162, 184, 0.05) 100%);
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
         @media (max-width: 768px) {
             .mobile-menu-toggle {
                 display: block;
@@ -653,8 +715,64 @@
 
                 <!-- User Actions -->
                 <div class="ms-auto d-flex align-items-center gap-2">
-                    <a href="#" class="btn btn-outline-primary">Đăng nhập</a>
-                    <a href="#" class="btn btn-primary">Đăng ký</a>
+                    @guest
+                        <a href="{{ route('login') }}" class="btn btn-outline-primary">Đăng nhập</a>
+                        <a href="{{ route('register') }}" class="btn btn-primary">Đăng ký</a>
+                    @else
+                        <!-- User Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-2"></i>
+                                <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        <i class="fas fa-user me-2"></i>
+                                        {{ Auth::user()->name }}
+                                    </h6>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user me-2"></i>
+                                        Thông tin cá nhân
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-book me-2"></i>
+                                        Khóa học của tôi
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-certificate me-2"></i>
+                                        Chứng chỉ
+                                    </a>
+                                </li>
+                                @if(Auth::user()->role === 'admin')
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                            <i class="fas fa-cog me-2"></i>
+                                            Quản trị hệ thống
+                                        </a>
+                                    </li>
+                                @endif
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i>
+                                            Đăng xuất
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @endguest
                 </div>
             </div>
         </div>
@@ -682,12 +800,6 @@
                 </a>
             </li>
             <li>
-                <a href="#courses">
-                    <i class="fas fa-graduation-cap"></i>
-                    Khóa học
-                </a>
-            </li>
-            <li>
                 <a href="#about">
                     <i class="fas fa-info-circle"></i>
                     Giới thiệu
@@ -704,6 +816,47 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Flash Messages -->
+        @if(session('success'))
+            <div class="container mt-3">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="container mt-3">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
+        @if(session('warning'))
+            <div class="container mt-3">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    {{ session('warning') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div class="container mt-3">
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    {{ session('info') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
         @yield('content')
     </div>
 

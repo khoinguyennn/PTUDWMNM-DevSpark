@@ -129,7 +129,7 @@
 </section>
 
 <!-- Featured Courses Section -->
-<section class="py-5" id="courses">
+<section class="py-4" id="courses">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -263,7 +263,7 @@
         </div>
 
         @if($featuredCourses->count() > 0)
-            <div class="text-center mt-5">
+            <div class="text-center mt-4">
                 <a href="#" class="btn btn-outline-primary btn-lg">
                     <i class="fas fa-th-large me-2"></i>Xem tất cả khóa học
                 </a>
@@ -273,7 +273,7 @@
 </section>
 
 <!-- Free Courses Section -->
-<section class="py-5" style="background-color: #f8f9fa;">
+<section class="py-4" style="background-color: #f8f9fa;">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -418,7 +418,7 @@
         </div>
 
         @if($freeCourses->count() > 0)
-            <div class="text-center mt-5">
+            <div class="text-center mt-4">
                 <a href="#" class="btn btn-outline-success btn-lg">
                     <i class="fas fa-graduation-cap me-2"></i>Xem tất cả khóa học miễn phí
                 </a>
