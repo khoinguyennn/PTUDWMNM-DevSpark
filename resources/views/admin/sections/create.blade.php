@@ -16,11 +16,11 @@
 
                         <div class="mb-3">
                             <label for="title" class="form-label">Tên chương <span class="text-danger">*</span></label>
-                            <input type="text" 
-                                   class="form-control @error('title') is-invalid @enderror" 
-                                   id="title" 
-                                   name="title" 
-                                   value="{{ old('title') }}" 
+                            <input type="text"
+                                   class="form-control @error('title') is-invalid @enderror"
+                                   id="title"
+                                   name="title"
+                                   value="{{ old('title') }}"
                                    required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -29,12 +29,12 @@
 
                         <div class="mb-3">
                             <label for="position" class="form-label">Vị trí <span class="text-danger">*</span></label>
-                            <input type="number" 
-                                   class="form-control @error('position') is-invalid @enderror" 
-                                   id="position" 
-                                   name="position" 
-                                   value="{{ old('position', $course->sections->count() + 1) }}" 
-                                   min="1" 
+                            <input type="number"
+                                   class="form-control @error('position') is-invalid @enderror"
+                                   id="position"
+                                   name="position"
+                                   value="{{ old('position', $course->sections->count() + 1) }}"
+                                   min="1"
                                    required>
                             <small class="text-muted">Thứ tự hiển thị của chương trong khóa học</small>
                             @error('position')

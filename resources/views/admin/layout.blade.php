@@ -4,24 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Panel') - Quản lý Khóa học</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
             --sidebar-width: 260px;
             --primary-color: #4e73df;
             --secondary-color: #858796;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fc;
         }
-        
+
         .sidebar {
             position: fixed;
             top: 0;
@@ -34,7 +34,7 @@
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
             z-index: 1000;
         }
-        
+
         .sidebar-brand {
             padding: 1.5rem;
             font-size: 1.2rem;
@@ -42,11 +42,11 @@
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        
+
         .sidebar-menu {
             padding: 1rem 0;
         }
-        
+
         .sidebar-menu a {
             display: block;
             padding: 0.75rem 1.5rem;
@@ -54,93 +54,93 @@
             text-decoration: none;
             transition: all 0.3s;
         }
-        
+
         .sidebar-menu a:hover,
         .sidebar-menu a.active {
             background: rgba(255,255,255,0.1);
             color: white;
             border-left: 3px solid white;
         }
-        
+
         .sidebar-menu i {
             width: 25px;
             margin-right: 10px;
         }
-        
+
         .main-content {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
         }
-        
+
         .topbar {
             background: white;
             padding: 1rem 2rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
-        
+
         .content-wrapper {
             padding: 0 2rem 2rem;
         }
-        
+
         .card {
             border: none;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
-        
+
         .card-header {
             background: white;
             border-bottom: 1px solid #e3e6f0;
             padding: 1rem 1.5rem;
             font-weight: 600;
         }
-        
+
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        
+
         .btn-primary:hover {
             background-color: #2e59d9;
             border-color: #2e59d9;
         }
-        
+
         .alert {
             border-radius: 8px;
         }
-        
+
         .table-hover tbody tr:hover {
             background-color: #f8f9fc;
         }
-        
+
         .badge {
             padding: 0.35rem 0.65rem;
             font-weight: 500;
         }
-        
+
         .stat-card {
             border-left: 4px solid;
         }
-        
+
         .stat-card.primary {
             border-left-color: #4e73df;
         }
-        
+
         .stat-card.success {
             border-left-color: #1cc88a;
         }
-        
+
         .stat-card.warning {
             border-left-color: #f6c23e;
         }
-        
+
         .stat-card.info {
             border-left-color: #36b9cc;
         }
     </style>
-    
+
     @stack('styles')
 </head>
 <body>
@@ -224,7 +224,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     @stack('scripts')
 </body>
 </html>

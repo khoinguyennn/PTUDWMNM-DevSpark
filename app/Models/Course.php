@@ -16,12 +16,14 @@ class Course extends Model
         'instructor_id',
         'title',
         'description',
+        'learning_outcomes',
         'price',
         'thumbnail',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
+        'learning_outcomes' => 'array',
         'created_at' => 'datetime',
     ];
 

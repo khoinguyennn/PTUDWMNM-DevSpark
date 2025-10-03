@@ -17,11 +17,11 @@
 
                         <div class="mb-3">
                             <label for="title" class="form-label">Tên bài học <span class="text-danger">*</span></label>
-                            <input type="text" 
-                                   class="form-control @error('title') is-invalid @enderror" 
-                                   id="title" 
-                                   name="title" 
-                                   value="{{ old('title', $lesson->title) }}" 
+                            <input type="text"
+                                   class="form-control @error('title') is-invalid @enderror"
+                                   id="title"
+                                   name="title"
+                                   value="{{ old('title', $lesson->title) }}"
                                    required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -30,12 +30,12 @@
 
                         <div class="mb-3">
                             <label for="youtube_url" class="form-label">URL Video YouTube <span class="text-danger">*</span></label>
-                            <input type="url" 
-                                   class="form-control @error('youtube_url') is-invalid @enderror" 
-                                   id="youtube_url" 
-                                   name="youtube_url" 
-                                   value="{{ old('youtube_url', $lesson->youtube_url) }}" 
-                                   placeholder="https://www.youtube.com/watch?v=..." 
+                            <input type="url"
+                                   class="form-control @error('youtube_url') is-invalid @enderror"
+                                   id="youtube_url"
+                                   name="youtube_url"
+                                   value="{{ old('youtube_url', $lesson->youtube_url) }}"
+                                   placeholder="https://www.youtube.com/watch?v=..."
                                    required>
                             <small class="text-muted">Nhập URL video từ YouTube</small>
                             @error('youtube_url')
@@ -45,12 +45,12 @@
 
                         <div class="mb-3">
                             <label for="duration" class="form-label">Thời lượng (phút) <span class="text-danger">*</span></label>
-                            <input type="number" 
-                                   class="form-control @error('duration') is-invalid @enderror" 
-                                   id="duration" 
-                                   name="duration" 
-                                   value="{{ old('duration', $lesson->duration) }}" 
-                                   min="1" 
+                            <input type="number"
+                                   class="form-control @error('duration') is-invalid @enderror"
+                                   id="duration"
+                                   name="duration"
+                                   value="{{ old('duration', $lesson->duration) }}"
+                                   min="1"
                                    required>
                             @error('duration')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -59,12 +59,12 @@
 
                         <div class="mb-3">
                             <label for="position" class="form-label">Vị trí <span class="text-danger">*</span></label>
-                            <input type="number" 
-                                   class="form-control @error('position') is-invalid @enderror" 
-                                   id="position" 
-                                   name="position" 
-                                   value="{{ old('position', $lesson->position) }}" 
-                                   min="1" 
+                            <input type="number"
+                                   class="form-control @error('position') is-invalid @enderror"
+                                   id="position"
+                                   name="position"
+                                   value="{{ old('position', $lesson->position) }}"
+                                   min="1"
                                    required>
                             <small class="text-muted">Thứ tự hiển thị của bài học trong chương</small>
                             @error('position')

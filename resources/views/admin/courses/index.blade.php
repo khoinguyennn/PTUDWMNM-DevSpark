@@ -33,8 +33,8 @@
                             <td>{{ $course->id }}</td>
                             <td>
                                 @if($course->thumbnail)
-                                    <img src="{{ asset('storage/' . $course->thumbnail) }}" 
-                                         alt="{{ $course->title }}" 
+                                    <img src="{{ asset('storage/' . $course->thumbnail) }}"
+                                         alt="{{ $course->title }}"
                                          style="width: 60px; height: 40px; object-fit: cover; border-radius: 5px;">
                                 @else
                                     <div style="width: 60px; height: 40px; background: #e9ecef; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
@@ -56,18 +56,18 @@
                             <td>{{ $course->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="{{ route('admin.courses.show', $course) }}" 
-                                       class="btn btn-sm btn-info" 
+                                    <a href="{{ route('admin.courses.show', $course) }}"
+                                       class="btn btn-sm btn-info"
                                        title="Xem chi tiết">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('admin.courses.edit', $course) }}" 
-                                       class="btn btn-sm btn-warning" 
+                                    <a href="{{ route('admin.courses.edit', $course) }}"
+                                       class="btn btn-sm btn-warning"
                                        title="Chỉnh sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.courses.destroy', $course) }}" 
-                                          method="POST" 
+                                    <form action="{{ route('admin.courses.destroy', $course) }}"
+                                          method="POST"
                                           style="display: inline;"
                                           onsubmit="return confirm('Bạn có chắc chắn muốn xóa khóa học này?');">
                                         @csrf
@@ -83,7 +83,7 @@
                         <tr>
                             <td colspan="9" class="text-center text-muted py-4">
                                 <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
-                                Chưa có khóa học nào. 
+                                Chưa có khóa học nào.
                                 <a href="{{ route('admin.courses.create') }}">Tạo khóa học mới</a>
                             </td>
                         </tr>

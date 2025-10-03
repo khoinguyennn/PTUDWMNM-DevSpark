@@ -46,6 +46,19 @@
                             <hr>
                             <h5>Mô tả:</h5>
                             <p>{{ $course->description }}</p>
+                            
+                            @if($course->learning_outcomes && count($course->learning_outcomes) > 0)
+                                <hr>
+                                <h5><i class="fas fa-check-circle text-success me-2"></i>Bạn sẽ học được gì?</h5>
+                                <ul class="list-unstyled">
+                                    @foreach($course->learning_outcomes as $outcome)
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>{{ $outcome }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                            
                             <hr>
                             <div class="row text-center">
                                 <div class="col-md-4">

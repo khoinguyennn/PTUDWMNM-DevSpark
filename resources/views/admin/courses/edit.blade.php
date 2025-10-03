@@ -60,6 +60,46 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="learning_outcomes" class="form-label">Bạn sẽ học được gì?</label>
+                            <div id="learning-outcomes-container">
+                                @php
+                                    $outcomes = old('learning_outcomes', $course->learning_outcomes ?? []);
+                                @endphp
+                                @if(!empty($outcomes))
+                                    @foreach($outcomes as $index => $outcome)
+                                        <div class="input-group mb-2 learning-outcome-item">
+                                            <input type="text" 
+                                                   class="form-control @error('learning_outcomes.'.$index) is-invalid @enderror" 
+                                                   name="learning_outcomes[]" 
+                                                   value="{{ $outcome }}" 
+                                                   placeholder="Ví dụ: Hiểu về các khái niệm cơ bản của lập trình">
+                                            <button type="button" class="btn btn-outline-danger remove-outcome">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            @error('learning_outcomes.'.$index)
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="input-group mb-2 learning-outcome-item">
+                                        <input type="text" 
+                                               class="form-control" 
+                                               name="learning_outcomes[]" 
+                                               placeholder="Ví dụ: Hiểu về các khái niệm cơ bản của lập trình">
+                                        <button type="button" class="btn btn-outline-danger remove-outcome">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="add-learning-outcome">
+                                <i class="fas fa-plus me-1"></i> Thêm mục tiêu học tập
+                            </button>
+                            <small class="text-muted d-block mt-1">Mô tả những kiến thức, kỹ năng học viên sẽ đạt được sau khóa học</small>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="price" class="form-label">Giá (VNĐ) <span class="text-danger">*</span></label>
                             <input type="number" 
                                    class="form-control @error('price') is-invalid @enderror" 
@@ -110,3 +150,44 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('learning-outcomes-container');
+    const addButton = document.getElementById('add-learning-outcome');
+
+    // Add new learning outcome
+    addButton.addEventListener('click', function() {
+        const newItem = document.createElement('div');
+        newItem.className = 'input-group mb-2 learning-outcome-item';
+        newItem.innerHTML = `
+            <input type="text" 
+                   class="form-control" 
+                   name="learning_outcomes[]" 
+                   placeholder="Ví dụ: Hiểu về các khái niệm cơ bản của lập trình">
+            <button type="button" class="btn btn-outline-danger remove-outcome">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        container.appendChild(newItem);
+    });
+
+    // Remove learning outcome
+    container.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-outcome')) {
+            const item = e.target.closest('.learning-outcome-item');
+            const items = container.querySelectorAll('.learning-outcome-item');
+            
+            if (items.length > 1) {
+                item.remove();
+            } else {
+                // Clear the input instead of removing if it's the last one
+                const input = item.querySelector('input');
+                input.value = '';
+            }
+        }
+    });
+});
+</script>
+@endpush

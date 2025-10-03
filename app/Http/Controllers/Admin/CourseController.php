@@ -31,6 +31,8 @@ class CourseController extends Controller
             'instructor_id' => 'required|exists:users,id',
             'title' => 'required|max:200',
             'description' => 'required',
+            'learning_outcomes' => 'nullable|array',
+            'learning_outcomes.*' => 'required|string|max:500',
             'price' => 'required|numeric|min:0',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -57,6 +59,8 @@ class CourseController extends Controller
             'instructor_id' => 'required|exists:users,id',
             'title' => 'required|max:200',
             'description' => 'required',
+            'learning_outcomes' => 'nullable|array',
+            'learning_outcomes.*' => 'required|string|max:500',
             'price' => 'required|numeric|min:0',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

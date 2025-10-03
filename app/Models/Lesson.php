@@ -17,7 +17,7 @@ class Lesson extends Model
         'position',
     ];
 
-    // Disable timestamps completely  
+    // Disable timestamps completely
     public $timestamps = false;
 
     // Relationship with Section

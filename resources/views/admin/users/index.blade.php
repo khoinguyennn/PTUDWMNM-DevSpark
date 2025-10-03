@@ -48,13 +48,13 @@
                             <td>{{ $user->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="{{ route('admin.users.edit', $user) }}" 
-                                       class="btn btn-sm btn-warning" 
+                                    <a href="{{ route('admin.users.edit', $user) }}"
+                                       class="btn btn-sm btn-warning"
                                        title="Chỉnh sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{ route('admin.users.destroy', $user) }}" 
-                                          method="POST" 
+                                    <form action="{{ route('admin.users.destroy', $user) }}"
+                                          method="POST"
                                           style="display: inline;"
                                           onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
                                         @csrf
@@ -70,7 +70,7 @@
                         <tr>
                             <td colspan="6" class="text-center text-muted py-4">
                                 <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
-                                Chưa có người dùng nào. 
+                                Chưa có người dùng nào.
                                 <a href="{{ route('admin.users.create') }}">Tạo người dùng mới</a>
                             </td>
                         </tr>
