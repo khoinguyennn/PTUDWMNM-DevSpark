@@ -50,7 +50,7 @@
             height: calc(100vh - 70px);
             background: white;
             border-right: 1px solid #e9ecef;
-            z-index: 100;
+            z-index: 10;
             overflow-y: auto;
             padding: 0;
         }
@@ -598,7 +598,10 @@
             color: white;
             padding: 2rem 0 1rem;
             margin-top: 3rem;
-            margin-left: var(--sidebar-width);
+            margin-left: 0;
+            width: 100%;
+            position: relative;
+            z-index: 50;
         }
 
         .footer h5 {
@@ -621,6 +624,31 @@
 
         .footer a:hover {
             color: var(--primary-color);
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo {
+            width: 30px;
+            height: 30px;
+            background: var(--primary-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+
+        .footer-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
         }
 
         /* Mobile menu toggle */
@@ -877,7 +905,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <h5>DevStark Academy</h5>
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <img src="{{ asset('images/logo.jpg') }}" alt="DevStark Logo">
+                        </div>
+                        <h5 class="mb-0">DevStark Academy</h5>
+                    </div>
                     <p class="text-muted">Nền tảng học lập trình trực tuyến hàng đầu với các khóa học chất lượng cao.</p>
                 </div>
                 <div class="col-md-2 mb-3">
