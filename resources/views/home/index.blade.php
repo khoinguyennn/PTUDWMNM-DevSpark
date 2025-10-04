@@ -135,7 +135,7 @@
             <div class="col-12">
                 <h2 class="section-title">
                     Khóa học nổi bật
-                    <span class="badge rounded-pill" style="background: var(--primary-color); color: var(--text-dark); font-size: 0.6em;">MỚI</span>
+                    <span class="badge rounded-pill" style="background: var(--primary-color); color: white; font-size: 0.6em;">MỚI</span>
                 </h2>
             </div>
         </div>

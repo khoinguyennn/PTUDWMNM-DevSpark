@@ -380,12 +380,16 @@
             top: 10px;
             left: 10px;
             background: var(--secondary-color);
-            color: white;
+            color: white !important;
             padding: 3px 8px;
             border-radius: 10px;
             font-size: 0.7rem;
             font-weight: 600;
             z-index: 1;
+        }
+
+        .course-badge * {
+            color: white !important;
         }
 
         .course-image {
@@ -588,7 +592,7 @@
         }
 
         .footer h5 {
-            color: var(--primary-color);
+            color: white;
             margin-bottom: 1rem;
             font-size: 1rem;
         }
@@ -747,12 +751,6 @@
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-book me-2"></i>
                                         Khóa học của tôi
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-certificate me-2"></i>
-                                        Chứng chỉ
                                     </a>
                                 </li>
                                 @if(Auth::user()->role === 'admin')
