@@ -251,6 +251,8 @@
 
         .hero-content {
             padding: 10px 0;
+            margin-left: 40px;
+            padding-left: 20px;
         }
 
         .hero-content h1 {
@@ -514,6 +516,8 @@
             .hero-content {
                 text-align: center;
                 margin-bottom: 15px;
+                margin-left: 0;
+                padding-left: 0;
             }
 
             .hero-content h1 {

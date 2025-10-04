@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta ch            background: 
+    <meta ch            background:
                 radial-gradient(circle at 20% 80%, rgba(11, 186, 244, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(92, 179, 217, 0.2) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);t="UTF-8">
@@ -157,7 +157,7 @@
         .brand-subtitle {
             font-size: 1.1rem;
             opacity: 0.9;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             line-height: 1.6;
             position: relative;
             z-index: 2;
@@ -173,8 +173,8 @@
         .brand-features li {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
-            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
         }
 
         .brand-features i {
@@ -186,7 +186,7 @@
         /* Right Panel - Form */
         .auth-form {
             flex: 1;
-            padding: 3rem 2.5rem;
+            padding: 2rem 2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -194,7 +194,7 @@
 
         .form-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-title {
@@ -211,7 +211,7 @@
 
         /* Form Controls */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .form-label {
@@ -230,14 +230,14 @@
             border: 2px solid #e9ecef;
             border-right: none;
             border-radius: 12px 0 0 12px;
-            padding: 12px 15px;
+            padding: 10px 12px;
             color: var(--text-muted);
         }
 
         .form-control {
             border: 2px solid #e9ecef;
             border-radius: 0 12px 12px 0;
-            padding: 12px 15px;
+            padding: 10px 12px;
             font-size: 0.9rem;
             transition: all 0.3s ease;
             background: white;
