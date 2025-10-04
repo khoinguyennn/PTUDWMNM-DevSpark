@@ -9,18 +9,14 @@
         <div class="brand-logo">
             <img src="{{ asset('images/logo.jpg') }}" alt="DevStark Logo">
         </div>
-        
+
         <h1 class="brand-title">DevStark</h1>
         <p class="brand-subtitle">Nền tảng học lập trình hàng đầu Việt Nam</p>
-        
+
         <ul class="brand-features">
             <li>
                 <i class="fas fa-graduation-cap"></i>
                 Học từ các chuyên gia hàng đầu
-            </li>
-            <li>
-                <i class="fas fa-certificate"></i>
-                Nhận chứng chỉ sau khi hoàn thành
             </li>
             <li>
                 <i class="fas fa-users"></i>
@@ -54,7 +50,7 @@
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            
+
             <!-- Email -->
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
@@ -62,11 +58,11 @@
                     <span class="input-group-text">
                         <i class="fas fa-envelope"></i>
                     </span>
-                    <input 
-                        type="email" 
-                        class="form-control @error('email') is-invalid @enderror" 
-                        id="email" 
-                        name="email" 
+                    <input
+                        type="email"
+                        class="form-control @error('email') is-invalid @enderror"
+                        id="email"
+                        name="email"
                         value="{{ old('email') }}"
                         placeholder="Nhập email của bạn"
                         required
@@ -82,10 +78,10 @@
                     <span class="input-group-text">
                         <i class="fas fa-lock"></i>
                     </span>
-                    <input 
-                        type="password" 
-                        class="form-control @error('password') is-invalid @enderror" 
-                        id="password" 
+                    <input
+                        type="password"
+                        class="form-control @error('password') is-invalid @enderror"
+                        id="password"
                         name="password"
                         placeholder="Nhập mật khẩu"
                         required

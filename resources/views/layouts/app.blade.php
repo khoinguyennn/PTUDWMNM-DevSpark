@@ -397,18 +397,28 @@
             background-size: cover;
             background-position: center;
             position: relative;
+            background-color: #f8f9fa;
+            width: 100%;
+            background-repeat: no-repeat;
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
         }
 
         .course-gradient-1 {
-            background: var(--gradient-1);
+            background: none;
         }
 
         .course-gradient-2 {
-            background: var(--gradient-2);
+            background: none;
         }
 
         .course-gradient-3 {
-            background: var(--gradient-3);
+            background: none;
         }
 
         .course-body {

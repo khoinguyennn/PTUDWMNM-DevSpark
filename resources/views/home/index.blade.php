@@ -419,7 +419,7 @@
 
         @if($freeCourses->count() > 0)
             <div class="text-center mt-4">
-                <a href="#" class="btn btn-outline-success btn-lg">
+                <a href="#" class="btn btn-outline-primary btn-lg">
                     <i class="fas fa-graduation-cap me-2"></i>Xem tất cả khóa học miễn phí
                 </a>
             </div>
