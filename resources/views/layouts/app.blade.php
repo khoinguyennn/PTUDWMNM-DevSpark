@@ -460,7 +460,7 @@
 
         /* Section Styles */
         .section-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
             color: var(--text-dark);
@@ -572,7 +572,7 @@
             }
 
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
         }
 

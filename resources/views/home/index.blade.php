@@ -144,10 +144,6 @@
             @forelse($featuredCourses as $index => $course)
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge">
-                            <i class="fas fa-star me-1"></i>Nổi bật
-                        </div>
-
                         <div class="course-image course-gradient-{{ ($index % 3) + 1 }} d-flex align-items-center justify-content-center">
                             @if($course->thumbnail)
                                 <img src="{{ asset('storage/' . $course->thumbnail) }}"
@@ -180,10 +176,6 @@
                             @endif
 
                             <div class="course-price mt-auto">
-                                @php
-                                    $originalPrice = $course->price * 1.5; // Giả sử giá gốc cao hơn 50%
-                                @endphp
-                                <span class="price-original">{{ number_format($originalPrice, 0, ',', '.') }}đ</span>
                                 <span class="price-current">{{ number_format($course->price, 0, ',', '.') }}đ</span>
                             </div>
                         </div>
@@ -193,9 +185,6 @@
                 <!-- Default courses when no data -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge">
-                            <i class="fas fa-star me-1"></i>Mới
-                        </div>
                         <div class="course-image course-gradient-1 d-flex align-items-center justify-content-center">
                             <div class="text-white text-center">
                                 <i class="fas fa-code fa-4x mb-3"></i>
@@ -207,7 +196,6 @@
                             <h5 class="course-title">HTML CSS</h5>
                             <p class="course-subtitle">Cho người mới bắt đầu</p>
                             <div class="course-price">
-                                <span class="price-original">2.500.000đ</span>
                                 <span class="price-current">1.299.000đ</span>
                             </div>
                         </div>
@@ -216,9 +204,6 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge">
-                            <i class="fas fa-fire me-1"></i>Hot
-                        </div>
                         <div class="course-image course-gradient-2 d-flex align-items-center justify-content-center">
                             <div class="text-white text-center">
                                 <i class="fab fa-js-square fa-4x mb-3"></i>
@@ -230,7 +215,6 @@
                             <h5 class="course-title">JavaScript</h5>
                             <p class="course-subtitle">Cho người mới bắt đầu</p>
                             <div class="course-price">
-                                <span class="price-original">3.299.000đ</span>
                                 <span class="price-current">1.399.000đ</span>
                             </div>
                         </div>
@@ -239,9 +223,6 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge">
-                            <i class="fas fa-star me-1"></i>Mới
-                        </div>
                         <div class="course-image course-gradient-3 d-flex align-items-center justify-content-center">
                             <div class="text-white text-center">
                                 <i class="fab fa-sass fa-4x mb-3"></i>
@@ -253,7 +234,6 @@
                             <h5 class="course-title">Ngôn ngữ Sass</h5>
                             <p class="course-subtitle">Cho Frontend Developer</p>
                             <div class="course-price">
-                                <span class="price-original">400.000đ</span>
                                 <span class="price-current">299.000đ</span>
                             </div>
                         </div>
@@ -288,10 +268,6 @@
             @forelse($freeCourses as $index => $course)
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge" style="background: #28a745;">
-                            <i class="fas fa-gift me-1"></i>Miễn phí
-                        </div>
-
                         <div class="course-image course-gradient-{{ ($index % 3) + 1 }} d-flex align-items-center justify-content-center">
                             @if($course->thumbnail)
                                 <img src="{{ asset('storage/' . $course->thumbnail) }}"
@@ -333,9 +309,6 @@
                 <!-- Default free courses when no data -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge" style="background: #28a745;">
-                            <i class="fas fa-gift me-1"></i>Miễn phí
-                        </div>
                         <div class="course-image course-gradient-1 d-flex align-items-center justify-content-center">
                             <div class="text-white text-center">
                                 <i class="fab fa-html5 fa-4x mb-3"></i>
@@ -361,9 +334,6 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge" style="background: #28a745;">
-                            <i class="fas fa-gift me-1"></i>Miễn phí
-                        </div>
                         <div class="course-image course-gradient-2 d-flex align-items-center justify-content-center">
                             <div class="text-white text-center">
                                 <i class="fab fa-css3-alt fa-4x mb-3"></i>
@@ -389,9 +359,6 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card course-card">
-                        <div class="course-badge" style="background: #28a745;">
-                            <i class="fas fa-gift me-1"></i>Miễn phí
-                        </div>
                         <div class="course-image course-gradient-3 d-flex align-items-center justify-content-center">
                             <div class="text-white text-center">
                                 <i class="fas fa-code fa-4x mb-3"></i>
