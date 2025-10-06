@@ -370,9 +370,14 @@
             height: 100%;
         }
 
-        .course-card:hover {
+        .course-card:hover,
+        a:hover .course-card {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        a .course-card * {
+            color: inherit;
         }
 
         .course-badge {

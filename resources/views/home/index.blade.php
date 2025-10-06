@@ -143,8 +143,9 @@
         <div class="row g-4">
             @forelse($featuredCourses as $index => $course)
                 <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-{{ ($index % 3) + 1 }} d-flex align-items-center justify-content-center">
+                    <a href="{{ route('course.show', $course->id) }}" class="text-decoration-none">
+                        <div class="card course-card">
+                            <div class="course-image course-gradient-{{ ($index % 3) + 1 }} d-flex align-items-center justify-content-center">
                             @if($course->thumbnail)
                                 <img src="{{ asset('storage/' . $course->thumbnail) }}"
                                      alt="{{ $course->title }}"
@@ -179,7 +180,8 @@
                                 <span class="price-current">{{ number_format($course->price, 0, ',', '.') }}đ</span>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                    </a>
                 </div>
             @empty
                 <!-- Default courses when no data -->
@@ -267,8 +269,9 @@
         <div class="row g-4">
             @forelse($freeCourses as $index => $course)
                 <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-{{ ($index % 3) + 1 }} d-flex align-items-center justify-content-center">
+                    <a href="{{ route('course.show', $course->id) }}" class="text-decoration-none">
+                        <div class="card course-card">
+                            <div class="course-image course-gradient-{{ ($index % 3) + 1 }} d-flex align-items-center justify-content-center">
                             @if($course->thumbnail)
                                 <img src="{{ asset('storage/' . $course->thumbnail) }}"
                                      alt="{{ $course->title }}"
@@ -303,7 +306,8 @@
                                 <span class="price-current" style="color: #28a745; font-size: 1.2rem; font-weight: 700;">Miễn phí</span>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                    </a>
                 </div>
             @empty
                 <!-- Default free courses when no data -->

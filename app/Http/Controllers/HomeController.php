@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Section;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -15,7 +16,7 @@ class HomeController extends Controller
             ->latest()
             ->take(6)
             ->get();
-            
+
         // Lấy khóa học cho banner slides
         $bannerCourses = Course::with('instructor')
             ->latest()
@@ -30,5 +31,22 @@ class HomeController extends Controller
             ->get();
 
         return view('home.index', compact('featuredCourses', 'bannerCourses', 'freeCourses'));
+    }
+
+    public function show($id)
+    {
+        $course = Course::with(['instructor', 'sections.lessons'])
+            ->findOrFail($id);
+
+        // Tính tổng số bài học và tổng thời lượng
+        $totalLessons = $course->sections->sum(function($section) {
+            return $section->lessons->count();
+        });
+
+        $totalDuration = $course->sections->sum(function($section) {
+            return $section->lessons->sum('duration');
+        });
+
+        return view('home.course-detail', compact('course', 'totalLessons', 'totalDuration'));
     }
 }

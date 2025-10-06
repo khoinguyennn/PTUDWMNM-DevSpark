@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController;
 
 // Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/course/{id}', [HomeController::class, 'show'])->name('course.show');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
