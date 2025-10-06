@@ -177,7 +177,11 @@
                             @endif
 
                             <div class="course-price mt-auto">
-                                <span class="price-current">{{ number_format($course->price, 0, ',', '.') }}đ</span>
+                                @if($course->price > 0)
+                                    <span class="price-current">{{ number_format($course->price, 0, ',', '.') }}đ</span>
+                                @else
+                                    <span class="price-current price-free">Miễn phí</span>
+                                @endif
                             </div>
                         </div>
                         </div>
@@ -303,7 +307,7 @@
                             @endif
 
                             <div class="course-price mt-auto">
-                                <span class="price-current" style="color: #28a745; font-size: 1.2rem; font-weight: 700;">Miễn phí</span>
+                                <span class="price-current price-free">Miễn phí</span>
                             </div>
                         </div>
                         </div>
@@ -330,7 +334,7 @@
                                 </small>
                             </div>
                             <div class="course-price">
-                                <span class="price-current" style="color: #28a745; font-size: 1.2rem; font-weight: 700;">Miễn phí</span>
+                                <span class="price-current price-free">Miễn phí</span>
                             </div>
                         </div>
                     </div>
@@ -355,7 +359,7 @@
                                 </small>
                             </div>
                             <div class="course-price">
-                                <span class="price-current" style="color: #28a745; font-size: 1.2rem; font-weight: 700;">Miễn phí</span>
+                                <span class="price-current" class="price-free">Miễn phí</span>
                             </div>
                         </div>
                     </div>
@@ -380,7 +384,7 @@
                                 </small>
                             </div>
                             <div class="course-price">
-                                <span class="price-current" style="color: #28a745; font-size: 1.2rem; font-weight: 700;">Miễn phí</span>
+                                <span class="price-current" class="price-free">Miễn phí</span>
                             </div>
                         </div>
                     </div>

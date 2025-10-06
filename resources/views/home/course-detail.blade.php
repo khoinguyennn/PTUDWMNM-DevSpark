@@ -147,9 +147,19 @@
                         </div>
                     @endif
 
-                    <button class="btn btn-primary btn-lg w-100 mb-3">
-                        <i class="fas fa-graduation-cap me-2"></i>ĐĂNG KÝ HỌC
-                    </button>
+                    @auth
+                        <!-- Already enrolled button/redirect happens in controller -->
+                        <form action="{{ route('course.enroll', $course->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                <i class="fas fa-graduation-cap me-2"></i>ĐĂNG KÝ HỌC
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-primary btn-lg w-100 mb-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>ĐĂNG NHẬP ĐỂ HỌC
+                        </a>
+                    @endauth
 
                     <!-- Course Features -->
                     <div class="course-features">

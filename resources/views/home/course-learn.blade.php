@@ -1,0 +1,358 @@
+@extends('layouts.app')
+
+@section('title', $course->title . ' - Học tập')
+
+@push('styles')
+<style>
+    /* Hide main sidebar on learning page */
+    .sidebar {
+        display: none;
+    }
+    
+    /* Adjust main content to full width */
+    .main-content {
+        margin-left: 0;
+    }
+    
+    /* Learning page specific styles */
+    .learning-container {
+        display: flex;
+        height: calc(100vh - 70px);
+        margin-top: 0;
+    }
+    
+    /* Video section */
+    .video-section {
+        flex: 1;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    
+    .video-player {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+    }
+    
+    .video-placeholder {
+        text-align: center;
+        color: #888;
+    }
+    
+    /* Course content sidebar */
+    .course-content-sidebar {
+        width: 400px;
+        background: white;
+        border-left: 1px solid #e9ecef;
+        overflow-y: auto;
+        height: calc(100vh - 70px);
+    }
+    
+    .course-description {
+        padding: 20px;
+        border-bottom: 1px solid #e9ecef;
+        background: white;
+    }
+    
+    .description-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-dark);
+    }
+    
+    .description-text {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+    }
+    
+    .content-sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid #e9ecef;
+        background: #f8f9fa;
+    }
+    
+    .content-sidebar-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text-dark);
+    }
+    
+    .course-progress {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .lesson-section {
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .section-header {
+        padding: 15px 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0;
+        flex: 1;
+        color: var(--text-dark);
+    }
+    
+    .section-toggle {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    
+    .lessons-list {
+        background: white;
+        display: none;
+    }
+    
+    .lesson-item {
+        padding: 12px 20px;
+        border-bottom: 1px solid #f5f5f5;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .lesson-item:hover {
+        background: #f8f9fa;
+    }
+    
+    .lesson-item.active {
+        background: rgba(11, 186, 244, 0.1);
+        border-left: 3px solid var(--primary-color);
+    }
+    
+    .lesson-icon {
+        width: 30px;
+        height: 30px;
+        background: #f0f0f0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+    
+    .lesson-item.active .lesson-icon {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .lesson-content {
+        flex: 1;
+    }
+    
+    .lesson-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 2px;
+        color: var(--text-dark);
+    }
+    
+    .lesson-duration {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+    
+    /* Responsive for mobile */
+    @media (max-width: 768px) {
+        .learning-container {
+            flex-direction: column;
+        }
+        
+        .video-section {
+            height: 60vh;
+        }
+        
+        .course-content-sidebar {
+            width: 100%;
+            height: 40vh;
+        }
+    }
+</style>
+@endpush
+
+@section('content')
+    <div class="learning-container">
+        <!-- Video Section -->
+        <div class="video-section">
+            <div class="video-player">
+                @if($currentLesson && $currentLesson->youtube_url)
+                    <!-- YouTube Video Player -->
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/{{ $currentLesson->youtube_url }}?autoplay=1&rel=0" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                @else
+                    <div class="video-placeholder">
+                        <i class="fab fa-youtube fa-3x mb-3" style="color: #666;"></i>
+                        <h3>Video youtube</h3>
+                        <p>Chọn một bài học để bắt đầu</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Course Content Sidebar -->
+        <div class="course-content-sidebar">
+            <!-- Course Description -->
+            <div class="course-description">
+                <h3 class="description-title">Bạn sẽ học được gì sau khóa học ?</h3>
+                <p class="description-text">{{ $course->description ?? 'Tổng quan về khóa học ' . $course->title }}</p>
+            </div>
+
+            <!-- Sidebar Header -->
+            <div class="content-sidebar-header">
+                <h3 class="content-sidebar-title">Nội dung khóa học</h3>
+                <div class="course-progress">
+                    @php
+                        $totalLessons = $course->sections->sum(function($section) {
+                            return $section->lessons->count();
+                        });
+                    @endphp
+                    {{ $totalLessons }} bài học
+                </div>
+            </div>
+
+            <!-- Course Sections -->
+            @foreach($course->sections as $sectionIndex => $section)
+                <div class="lesson-section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <h4 class="section-title">{{ $sectionIndex + 1 }}. {{ $section->title }}</h4>
+                        <div class="section-toggle">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="lessons-list">
+                        @foreach($section->lessons as $lessonIndex => $lesson)
+                            <div class="lesson-item {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}" 
+                                 data-lesson-id="{{ $lesson->id }}"
+                                 data-video-url="{{ $lesson->youtube_url }}"
+                                 onclick="selectLesson(this)">
+                                <div class="lesson-icon">
+                                    @if($currentLesson && $currentLesson->id == $lesson->id)
+                                        <i class="fas fa-play"></i>
+                                    @else
+                                        <i class="fas fa-play-circle"></i>
+                                    @endif
+                                </div>
+                                <div class="lesson-content">
+                                    <div class="lesson-title">
+                                        {{ $sectionIndex + 1 }}.{{ $lessonIndex + 1 }} {{ $lesson->title }}
+                                    </div>
+                                    @if($lesson->duration)
+                                        <div class="lesson-duration">{{ $lesson->duration }} phút</div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+
+            @if($course->sections->isEmpty())
+                <div class="text-center p-4">
+                    <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Chưa có nội dung bài học</p>
+                    <p class="text-muted small">Khóa học này chưa có sections và lessons được thêm vào.</p>
+                </div>
+            @endif
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+<script>
+    // Section toggle functionality
+    function toggleSection(header) {
+        const lessonsList = header.nextElementSibling;
+        const toggle = header.querySelector('.section-toggle i');
+        
+        if (lessonsList.style.display === 'none' || lessonsList.style.display === '') {
+            lessonsList.style.display = 'block';
+            toggle.classList.remove('fa-chevron-down');
+            toggle.classList.add('fa-chevron-up');
+        } else {
+            lessonsList.style.display = 'none';
+            toggle.classList.remove('fa-chevron-up');
+            toggle.classList.add('fa-chevron-down');
+        }
+    }
+
+    // Lesson selection functionality
+    function selectLesson(lesson) {
+        // Remove active from all lessons
+        document.querySelectorAll('.lesson-item').forEach(l => {
+            l.classList.remove('active');
+            l.querySelector('.lesson-icon i').className = 'fas fa-play-circle';
+        });
+        
+        // Add active to clicked lesson
+        lesson.classList.add('active');
+        lesson.querySelector('.lesson-icon i').className = 'fas fa-play';
+        
+        // Get video URL
+        const videoUrl = lesson.dataset.videoUrl;
+        const videoPlayer = document.querySelector('.video-player');
+        
+        if (videoUrl) {
+            // Create YouTube embed
+            videoPlayer.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/${videoUrl}?autoplay=1&rel=0" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+        } else {
+            // Show placeholder
+            videoPlayer.innerHTML = `
+                <div class="video-placeholder">
+                    <i class="fab fa-youtube fa-3x mb-3" style="color: #666;"></i>
+                    <h3>Video youtube</h3>
+                    <p>Video chưa được thêm cho bài học này</p>
+                </div>
+            `;
+        }
+    }
+
+    // Auto-expand first section on load
+    document.addEventListener('DOMContentLoaded', function() {
+        const firstSection = document.querySelector('.lesson-section');
+        if (firstSection) {
+            const header = firstSection.querySelector('.section-header');
+            toggleSection(header);
+        }
+    });
+</script>
+@endpush

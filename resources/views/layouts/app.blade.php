@@ -380,6 +380,11 @@
             color: inherit;
         }
 
+        a .course-card .price-current,
+        a .course-card .price-free {
+            color: var(--primary-color) !important;
+        }
+
         .course-badge {
             position: absolute;
             top: 10px;
@@ -458,9 +463,15 @@
         }
 
         .price-current {
-            color: var(--secondary-color);
+            color: var(--primary-color);
             font-weight: 700;
             font-size: 1rem;
+        }
+
+        .price-free {
+            color: var(--primary-color) !important;
+            font-size: 1.2rem !important;
+            font-weight: 700 !important;
         }
 
         /* Section Styles */
