@@ -71,8 +71,7 @@
     }
 
     .video-description {
-        padding: 20px;
-        background: white;
+        padding: 20px 20px;
         width: 100%;
         margin-top: 0;
     }
@@ -214,13 +213,18 @@
     <div class="learning-container">
         <!-- Video Section -->
         <div class="video-section">
+            <!-- Course Title Above Video -->
+            <div style="width: 100%; max-width: 700px; padding: 20px 20px 0 20px; margin-bottom: 10px;">
+                <h2 style="color: var(--text-dark); font-size: 1.5rem; font-weight: 600; margin: 0; text-align: center;">{{ $course->title }}</h2>
+            </div>
+
             <div class="video-player">
                 @if($currentLesson && $currentLesson->youtube_url)
                     @php
                         // Extract YouTube video ID from various URL formats
                         $youtube_url = $currentLesson->youtube_url;
                         $video_id = '';
-                        
+
                         if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $youtube_url, $matches)) {
                             $video_id = $matches[1];
                         } else {
@@ -228,7 +232,7 @@
                             $video_id = $youtube_url;
                         }
                     @endphp
-                    
+
                     @if($video_id)
                         <!-- YouTube Video Player -->
                         <iframe
@@ -365,9 +369,9 @@
                 const matches = url.match(regex);
                 return matches ? matches[1] : url; // Return the ID or original if it's already an ID
             }
-            
+
             const videoId = getYouTubeVideoId(videoUrl);
-            
+
             // Create YouTube embed
             videoPlayer.innerHTML = `
                 <iframe
