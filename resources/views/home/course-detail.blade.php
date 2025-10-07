@@ -175,10 +175,6 @@
                             <i class="fas fa-infinity text-muted me-3"></i>
                             <span>Học mọi lúc, mọi nơi</span>
                         </div>
-                        <div class="feature-item d-flex align-items-center">
-                            <i class="fas fa-certificate text-muted me-3"></i>
-                            <span>Cấp chứng chỉ hoàn thành</span>
-                        </div>
                     </div>
                 </div>
 

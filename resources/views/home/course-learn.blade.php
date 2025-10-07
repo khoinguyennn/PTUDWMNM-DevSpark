@@ -6,21 +6,21 @@
 <style>
     /* Hide main sidebar on learning page */
     .sidebar {
-        display: none;
+        display: block;
     }
-    
+
     /* Adjust main content to full width */
     .main-content {
-        margin-left: 0;
+        margin-left: var(--sidebar-width);
     }
-    
+
     /* Learning page specific styles */
     .learning-container {
         display: flex;
         height: calc(100vh - 70px);
         margin-top: 0;
     }
-    
+
     /* Video section */
     .video-section {
         flex: 1;
@@ -29,24 +29,27 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        max-height: 500px; /* Giới hạn chiều cao video */
     }
-    
+
     .video-player {
         width: 100%;
-        height: 100%;
+        height: 400px; /* Chiều cao cố định cho video */
+        max-width: 700px; /* Giới hạn chiều rộng */
         background: #000;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
         font-size: 1.2rem;
+        margin: 20px;
     }
-    
+
     .video-placeholder {
         text-align: center;
         color: #888;
     }
-    
+
     /* Course content sidebar */
     .course-content-sidebar {
         width: 400px;
@@ -55,48 +58,48 @@
         overflow-y: auto;
         height: calc(100vh - 70px);
     }
-    
+
     .course-description {
         padding: 20px;
         border-bottom: 1px solid #e9ecef;
         background: white;
     }
-    
+
     .description-title {
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 10px;
         color: var(--text-dark);
     }
-    
+
     .description-text {
         font-size: 0.9rem;
         color: var(--text-muted);
         line-height: 1.5;
     }
-    
+
     .content-sidebar-header {
         padding: 20px;
         border-bottom: 1px solid #e9ecef;
         background: #f8f9fa;
     }
-    
+
     .content-sidebar-title {
         font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 8px;
         color: var(--text-dark);
     }
-    
+
     .course-progress {
         font-size: 0.9rem;
         color: var(--text-muted);
     }
-    
+
     .lesson-section {
         border-bottom: 1px solid #f0f0f0;
     }
-    
+
     .section-header {
         padding: 15px 20px;
         background: #f8f9fa;
@@ -106,7 +109,7 @@
         align-items: center;
         justify-content: space-between;
     }
-    
+
     .section-title {
         font-size: 1rem;
         font-weight: 600;
@@ -114,17 +117,17 @@
         flex: 1;
         color: var(--text-dark);
     }
-    
+
     .section-toggle {
         color: var(--text-muted);
         font-size: 0.9rem;
     }
-    
+
     .lessons-list {
         background: white;
         display: none;
     }
-    
+
     .lesson-item {
         padding: 12px 20px;
         border-bottom: 1px solid #f5f5f5;
@@ -134,16 +137,16 @@
         align-items: center;
         gap: 10px;
     }
-    
+
     .lesson-item:hover {
         background: #f8f9fa;
     }
-    
+
     .lesson-item.active {
         background: rgba(11, 186, 244, 0.1);
         border-left: 3px solid var(--primary-color);
     }
-    
+
     .lesson-icon {
         width: 30px;
         height: 30px;
@@ -155,38 +158,38 @@
         font-size: 0.8rem;
         color: var(--text-muted);
     }
-    
+
     .lesson-item.active .lesson-icon {
         background: var(--primary-color);
         color: white;
     }
-    
+
     .lesson-content {
         flex: 1;
     }
-    
+
     .lesson-title {
         font-size: 0.9rem;
         font-weight: 500;
         margin-bottom: 2px;
         color: var(--text-dark);
     }
-    
+
     .lesson-duration {
         font-size: 0.8rem;
         color: var(--text-muted);
     }
-    
+
     /* Responsive for mobile */
     @media (max-width: 768px) {
         .learning-container {
             flex-direction: column;
         }
-        
+
         .video-section {
             height: 60vh;
         }
-        
+
         .course-content-sidebar {
             width: 100%;
             height: 40vh;
@@ -202,12 +205,12 @@
             <div class="video-player">
                 @if($currentLesson && $currentLesson->youtube_url)
                     <!-- YouTube Video Player -->
-                    <iframe 
-                        width="100%" 
-                        height="100%" 
-                        src="https://www.youtube.com/embed/{{ $currentLesson->youtube_url }}?autoplay=1&rel=0" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    <iframe
+                        width="100%"
+                        height="100%"
+                        src="https://www.youtube.com/embed/{{ $currentLesson->youtube_url }}?autoplay=1&rel=0"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
                 @else
@@ -252,7 +255,7 @@
                     </div>
                     <div class="lessons-list">
                         @foreach($section->lessons as $lessonIndex => $lesson)
-                            <div class="lesson-item {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}" 
+                            <div class="lesson-item {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}"
                                  data-lesson-id="{{ $lesson->id }}"
                                  data-video-url="{{ $lesson->youtube_url }}"
                                  onclick="selectLesson(this)">
@@ -294,7 +297,7 @@
     function toggleSection(header) {
         const lessonsList = header.nextElementSibling;
         const toggle = header.querySelector('.section-toggle i');
-        
+
         if (lessonsList.style.display === 'none' || lessonsList.style.display === '') {
             lessonsList.style.display = 'block';
             toggle.classList.remove('fa-chevron-down');
@@ -313,24 +316,24 @@
             l.classList.remove('active');
             l.querySelector('.lesson-icon i').className = 'fas fa-play-circle';
         });
-        
+
         // Add active to clicked lesson
         lesson.classList.add('active');
         lesson.querySelector('.lesson-icon i').className = 'fas fa-play';
-        
+
         // Get video URL
         const videoUrl = lesson.dataset.videoUrl;
         const videoPlayer = document.querySelector('.video-player');
-        
+
         if (videoUrl) {
             // Create YouTube embed
             videoPlayer.innerHTML = `
-                <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src="https://www.youtube.com/embed/${videoUrl}?autoplay=1&rel=0" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                <iframe
+                    width="100%"
+                    height="100%"
+                    src="https://www.youtube.com/embed/${videoUrl}?autoplay=1&rel=0"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe>
             `;
