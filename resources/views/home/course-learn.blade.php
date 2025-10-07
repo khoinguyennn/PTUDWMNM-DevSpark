@@ -21,15 +21,20 @@
         margin-top: 0;
     }
 
+    .video-and-content {
+        display: flex;
+        flex: 1;
+    }
+
     /* Video section */
     .video-section {
         flex: 1;
-        background: #000;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         position: relative;
-        max-height: 500px; /* Giới hạn chiều cao video */
+        max-height: none; /* Bỏ giới hạn chiều cao */
     }
 
     .video-player {
@@ -63,6 +68,13 @@
         padding: 20px;
         border-bottom: 1px solid #e9ecef;
         background: white;
+    }
+
+    .video-description {
+        padding: 20px;
+        background: white;
+        width: 100%;
+        margin-top: 0;
     }
 
     .description-title {
@@ -204,15 +216,36 @@
         <div class="video-section">
             <div class="video-player">
                 @if($currentLesson && $currentLesson->youtube_url)
-                    <!-- YouTube Video Player -->
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        src="https://www.youtube.com/embed/{{ $currentLesson->youtube_url }}?autoplay=1&rel=0"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
+                    @php
+                        // Extract YouTube video ID from various URL formats
+                        $youtube_url = $currentLesson->youtube_url;
+                        $video_id = '';
+                        
+                        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $youtube_url, $matches)) {
+                            $video_id = $matches[1];
+                        } else {
+                            // If it's already just the video ID
+                            $video_id = $youtube_url;
+                        }
+                    @endphp
+                    
+                    @if($video_id)
+                        <!-- YouTube Video Player -->
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src="https://www.youtube.com/embed/{{ $video_id }}?rel=0&modestbranding=1"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    @else
+                        <div class="video-placeholder">
+                            <i class="fab fa-youtube fa-3x mb-3" style="color: #666;"></i>
+                            <h3>Video không hợp lệ</h3>
+                            <p>URL YouTube không đúng định dạng</p>
+                        </div>
+                    @endif
                 @else
                     <div class="video-placeholder">
                         <i class="fab fa-youtube fa-3x mb-3" style="color: #666;"></i>
@@ -221,28 +254,28 @@
                     </div>
                 @endif
             </div>
+
+            <!-- Course Description Below Video -->
+            <div class="video-description">
+                <h3 class="description-title">Về khóa học</h3>
+                <p class="description-text">{{ $course->description ?? 'Tổng quan về khóa học ' . $course->title }}</p>
+            </div>
         </div>
 
         <!-- Course Content Sidebar -->
         <div class="course-content-sidebar">
-            <!-- Course Description -->
-            <div class="course-description">
-                <h3 class="description-title">Bạn sẽ học được gì sau khóa học ?</h3>
-                <p class="description-text">{{ $course->description ?? 'Tổng quan về khóa học ' . $course->title }}</p>
-            </div>
-
-            <!-- Sidebar Header -->
-            <div class="content-sidebar-header">
-                <h3 class="content-sidebar-title">Nội dung khóa học</h3>
-                <div class="course-progress">
-                    @php
-                        $totalLessons = $course->sections->sum(function($section) {
-                            return $section->lessons->count();
-                        });
-                    @endphp
-                    {{ $totalLessons }} bài học
+                <!-- Sidebar Header -->
+                <div class="content-sidebar-header">
+                    <h3 class="content-sidebar-title">Nội dung khóa học</h3>
+                    <div class="course-progress">
+                        @php
+                            $totalLessons = $course->sections->sum(function($section) {
+                                return $section->lessons->count();
+                            });
+                        @endphp
+                        {{ $totalLessons }} bài học
+                    </div>
                 </div>
-            </div>
 
             <!-- Course Sections -->
             @foreach($course->sections as $sectionIndex => $section)
@@ -326,14 +359,23 @@
         const videoPlayer = document.querySelector('.video-player');
 
         if (videoUrl) {
+            // Extract YouTube video ID from various URL formats
+            function getYouTubeVideoId(url) {
+                const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+                const matches = url.match(regex);
+                return matches ? matches[1] : url; // Return the ID or original if it's already an ID
+            }
+            
+            const videoId = getYouTubeVideoId(videoUrl);
+            
             // Create YouTube embed
             videoPlayer.innerHTML = `
                 <iframe
                     width="100%"
                     height="100%"
-                    src="https://www.youtube.com/embed/${videoUrl}?autoplay=1&rel=0"
+                    src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1"
                     frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
                 </iframe>
             `;
