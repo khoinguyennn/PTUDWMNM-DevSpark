@@ -157,6 +157,7 @@ class PaymentController extends Controller
 
             // Create course enrollment
             $orderItem = OrderItem::where('order_id', $order->id)->first();
+            $course = null;
             if ($orderItem) {
                 DB::table('course_enrollments')->updateOrInsert([
                     'user_id' => $order->user_id,
@@ -165,11 +166,14 @@ class PaymentController extends Controller
                     'enrolled_at' => now(),
                     'created_at' => now()
                 ]);
+                
+                // Get course info for redirect
+                $course = Course::find($orderItem->course_id);
             }
 
             DB::commit();
 
-            return view('payment.success')->with('success', 'Thanh toán thành công! Bạn đã được đăng ký vào khóa học.');
+            return view('payment.success', compact('course'))->with('success', 'Thanh toán thành công! Bạn đã được đăng ký vào khóa học.');
 
         } catch (\Exception $e) {
             DB::rollBack();
