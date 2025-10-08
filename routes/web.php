@@ -14,6 +14,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/course/{id}', [HomeController::class, 'show'])->name('course.show');
 Route::get('/course/{id}/learn', [HomeController::class, 'learn'])->name('course.learn')->middleware('auth');
 Route::post('/course/{id}/enroll', [HomeController::class, 'enroll'])->name('course.enroll')->middleware('auth');
+Route::post('/lesson/mark-complete', [HomeController::class, 'markLessonComplete'])->name('lesson.mark-complete')->middleware('auth');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

@@ -261,7 +261,18 @@
 
             <!-- Course Description Below Video -->
             <div class="video-description">
-                <h3 class="description-title">Về khóa học</h3>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                    <h3 class="description-title" style="margin-bottom: 0;">Về khóa học</h3>
+                    @if($currentLesson)
+                        <button id="markCompleteBtn" class="btn btn-sm" 
+                                style="background: {{ $isCurrentLessonCompleted ?? false ? '#28a745' : 'var(--primary-color)' }}; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem;"
+                                data-lesson-id="{{ $currentLesson->id }}"
+                                {{ $isCurrentLessonCompleted ?? false ? 'disabled' : '' }}>
+                            <i class="fas fa-check-circle me-1"></i>
+                            <span id="markCompleteText">{{ $isCurrentLessonCompleted ?? false ? 'Đã hoàn thành' : 'Đánh dấu hoàn thành' }}</span>
+                        </button>
+                    @endif
+                </div>
                 <p class="description-text">{{ $course->description ?? 'Tổng quan về khóa học ' . $course->title }}</p>
             </div>
         </div>
@@ -292,15 +303,19 @@
                     </div>
                     <div class="lessons-list">
                         @foreach($section->lessons as $lessonIndex => $lesson)
-                            <div class="lesson-item {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}"
+                            @php
+                                $isLessonCompleted = in_array($lesson->id, $completedLessons ?? []);
+                            @endphp
+                            <div class="lesson-item {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}" 
                                  data-lesson-id="{{ $lesson->id }}"
                                  data-video-url="{{ $lesson->youtube_url }}"
+                                 data-is-completed="{{ $isLessonCompleted ? 'true' : 'false' }}"
                                  onclick="selectLesson(this)">
-                                <div class="lesson-icon">
+                                <div class="lesson-icon" style="background: {{ $isLessonCompleted ? '#28a745' : '#f0f0f0' }};">
                                     @if($currentLesson && $currentLesson->id == $lesson->id)
-                                        <i class="fas fa-play"></i>
+                                        <i class="fas {{ $isLessonCompleted ? 'fa-check' : 'fa-play' }}" style="color: {{ $isLessonCompleted ? 'white' : 'var(--text-muted)' }};"></i>
                                     @else
-                                        <i class="fas fa-play-circle"></i>
+                                        <i class="fas {{ $isLessonCompleted ? 'fa-check' : 'fa-play-circle' }}" style="color: {{ $isLessonCompleted ? 'white' : 'var(--text-muted)' }};"></i>
                                     @endif
                                 </div>
                                 <div class="lesson-content">
@@ -348,15 +363,32 @@
 
     // Lesson selection functionality
     function selectLesson(lesson) {
-        // Remove active from all lessons
+        // Remove active from all lessons and restore their original icons
         document.querySelectorAll('.lesson-item').forEach(l => {
             l.classList.remove('active');
-            l.querySelector('.lesson-icon i').className = 'fas fa-play-circle';
+            const icon = l.querySelector('.lesson-icon i');
+            const isCompleted = l.dataset.isCompleted === 'true';
+            
+            if (isCompleted) {
+                icon.className = 'fas fa-check';
+            } else {
+                icon.className = 'fas fa-play-circle';
+            }
         });
 
-        // Add active to clicked lesson
+        // Add active to clicked lesson and update its icon
         lesson.classList.add('active');
-        lesson.querySelector('.lesson-icon i').className = 'fas fa-play';
+        const lessonIcon = lesson.querySelector('.lesson-icon i');
+        const isCompleted = lesson.dataset.isCompleted === 'true';
+        
+        if (isCompleted) {
+            lessonIcon.className = 'fas fa-check';
+        } else {
+            lessonIcon.className = 'fas fa-play';
+        }
+
+        // Update mark complete button
+        updateMarkCompleteButton(lesson);
 
         // Get video URL
         const videoUrl = lesson.dataset.videoUrl;
@@ -369,9 +401,9 @@
                 const matches = url.match(regex);
                 return matches ? matches[1] : url; // Return the ID or original if it's already an ID
             }
-
+            
             const videoId = getYouTubeVideoId(videoUrl);
-
+            
             // Create YouTube embed
             videoPlayer.innerHTML = `
                 <iframe
@@ -395,13 +427,133 @@
         }
     }
 
-    // Auto-expand first section on load
+    // Function to update mark complete button
+    function updateMarkCompleteButton(lessonElement) {
+        const markCompleteBtn = document.getElementById('markCompleteBtn');
+        const markCompleteText = document.getElementById('markCompleteText');
+        
+        if (!markCompleteBtn) return;
+        
+        const lessonId = lessonElement.dataset.lessonId;
+        const isCompleted = lessonElement.dataset.isCompleted === 'true';
+        
+        markCompleteBtn.dataset.lessonId = lessonId;
+        
+        if (isCompleted) {
+            markCompleteBtn.style.background = '#28a745';
+            markCompleteBtn.disabled = true;
+            markCompleteText.textContent = 'Đã hoàn thành';
+        } else {
+            markCompleteBtn.style.background = 'var(--primary-color)';
+            markCompleteBtn.disabled = false;
+            markCompleteText.textContent = 'Đánh dấu hoàn thành';
+        }
+    }    // Auto-expand first section on load
     document.addEventListener('DOMContentLoaded', function() {
         const firstSection = document.querySelector('.lesson-section');
         if (firstSection) {
             const header = firstSection.querySelector('.section-header');
             toggleSection(header);
         }
+        
+        // Handle mark complete button
+        const markCompleteBtn = document.getElementById('markCompleteBtn');
+        if (markCompleteBtn) {
+            markCompleteBtn.addEventListener('click', function() {
+                markLessonComplete();
+            });
+        }
     });
+
+    // Function to mark lesson as complete
+    function markLessonComplete() {
+        const markCompleteBtn = document.getElementById('markCompleteBtn');
+        if (!markCompleteBtn) {
+            alert('Không tìm thấy nút đánh dấu hoàn thành');
+            return;
+        }
+        
+        const lessonId = markCompleteBtn.dataset.lessonId;
+        if (!lessonId) {
+            alert('Vui lòng chọn một bài học để đánh dấu hoàn thành');
+            return;
+        }
+        
+        const markCompleteText = document.getElementById('markCompleteText');
+        
+        // Disable button during request
+        markCompleteBtn.disabled = true;
+        markCompleteText.textContent = 'Đang xử lý...';
+        
+        // Send AJAX request
+        fetch('/lesson/mark-complete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                lesson_id: lessonId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update UI
+                markCompleteText.textContent = 'Đã hoàn thành';
+                markCompleteBtn.style.background = '#28a745';
+                
+                // Update current lesson item
+                const currentLessonItem = document.querySelector('.lesson-item.active');
+                if (currentLessonItem) {
+                    // Update data attribute
+                    currentLessonItem.dataset.isCompleted = 'true';
+                    
+                    // Update lesson icon
+                    const lessonIcon = currentLessonItem.querySelector('.lesson-icon i');
+                    lessonIcon.className = 'fas fa-check';
+                    lessonIcon.style.color = 'white';
+                    currentLessonItem.querySelector('.lesson-icon').style.background = '#28a745';
+                }
+                
+                // Show success message
+                showMessage('Đã đánh dấu bài học hoàn thành!', 'success');
+            } else {
+                throw new Error(data.message || 'Có lỗi xảy ra');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Có lỗi xảy ra: ' + error.message, 'error');
+            
+            // Reset button
+            markCompleteText.textContent = 'Đánh dấu hoàn thành';
+            markCompleteBtn.style.background = 'var(--primary-color)';
+            markCompleteBtn.disabled = false;
+        });
+    }
+
+    // Function to show message
+    function showMessage(message, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            background: ${type === 'success' ? '#28a745' : '#dc3545'};
+        `;
+        messageDiv.textContent = message;
+        
+        document.body.appendChild(messageDiv);
+        
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 3000);
+    }
 </script>
 @endpush

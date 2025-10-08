@@ -6,6 +6,8 @@ use App\Models\Course;
 use App\Models\Section;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Lesson;
+use App\Models\UserProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -94,7 +96,27 @@ class HomeController extends Controller
             }
         }
 
-        return view('home.course-learn', compact('course', 'currentLesson'));
+        // Lấy tất cả tiến độ học tập của user cho khóa học này
+        $lessonIds = [];
+        foreach ($course->sections as $section) {
+            foreach ($section->lessons as $lesson) {
+                $lessonIds[] = $lesson->id;
+            }
+        }
+        
+        $completedLessons = UserProgress::where('user_id', Auth::id())
+            ->whereIn('lesson_id', $lessonIds)
+            ->where('is_completed', true)
+            ->pluck('lesson_id')
+            ->toArray();
+
+        // Kiểm tra tiến độ của bài học hiện tại
+        $isCurrentLessonCompleted = false;
+        if ($currentLesson) {
+            $isCurrentLessonCompleted = in_array($currentLesson->id, $completedLessons);
+        }
+
+        return view('home.course-learn', compact('course', 'currentLesson', 'isCurrentLessonCompleted', 'completedLessons'));
     }
 
     public function enroll(Request $request, $id)
@@ -146,6 +168,54 @@ class HomeController extends Controller
             DB::rollBack();
             return redirect()->back()
                 ->with('error', 'Có lỗi xảy ra khi đăng ký khóa học. Vui lòng thử lại.');
+        }
+    }
+
+    public function markLessonComplete(Request $request)
+    {
+        $request->validate([
+            'lesson_id' => 'required|exists:lessons,id',
+        ]);
+
+        try {
+            $lesson = Lesson::findOrFail($request->lesson_id);
+            
+            // Kiểm tra xem người dùng đã đăng ký khóa học chưa
+            $courseId = $lesson->section->course_id;
+            $isEnrolled = DB::table('course_enrollments')
+                ->where('user_id', Auth::id())
+                ->where('course_id', $courseId)
+                ->exists();
+
+            if (!$isEnrolled) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn chưa đăng ký khóa học này.'
+                ], 403);
+            }
+
+            // Tạo hoặc cập nhật tiến độ học tập
+            UserProgress::updateOrCreate(
+                [
+                    'user_id' => Auth::id(),
+                    'lesson_id' => $request->lesson_id,
+                ],
+                [
+                    'is_completed' => true,
+                    'completed_at' => now(),
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Đã đánh dấu bài học hoàn thành!'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra: ' . $e->getMessage()
+            ], 500);
         }
     }
 }
