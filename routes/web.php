@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\SectionController;
@@ -15,6 +16,14 @@ Route::get('/course/{id}', [HomeController::class, 'show'])->name('course.show')
 Route::get('/course/{id}/learn', [HomeController::class, 'learn'])->name('course.learn')->middleware('auth');
 Route::post('/course/{id}/enroll', [HomeController::class, 'enroll'])->name('course.enroll')->middleware('auth');
 Route::post('/lesson/mark-complete', [HomeController::class, 'markLessonComplete'])->name('lesson.mark-complete')->middleware('auth');
+
+// Payment Routes
+Route::middleware('auth')->group(function () {
+    Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
+});
+Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])->name('payment.cancel');
+Route::post('/payment/webhook', [PaymentController::class, 'paymentWebhook'])->name('payment.webhook');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

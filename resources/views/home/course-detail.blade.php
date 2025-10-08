@@ -151,9 +151,15 @@
                         <!-- Already enrolled button/redirect happens in controller -->
                         <form action="{{ route('course.enroll', $course->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
-                                <i class="fas fa-graduation-cap me-2"></i>ĐĂNG KÝ HỌC
-                            </button>
+                            @if($course->price > 0)
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                    <i class="fas fa-credit-card me-2"></i>THANH TOÁN & HỌC NGAY
+                                </button>
+                            @else
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                    <i class="fas fa-graduation-cap me-2"></i>ĐĂNG KÝ HỌC MIỄN PHÍ
+                                </button>
+                            @endif
                         </form>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-primary btn-lg w-100 mb-3">

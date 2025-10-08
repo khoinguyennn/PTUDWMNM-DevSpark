@@ -8,12 +8,19 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Lesson;
 use App\Models\UserProgress;
+use App\Services\PayOSService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    protected $payOSService;
+
+    public function __construct(PayOSService $payOSService)
+    {
+        $this->payOSService = $payOSService;
+    }
     public function index()
     {
         // Lấy các khóa học nổi bật (có thể random hoặc theo tiêu chí)
@@ -133,41 +140,84 @@ class HomeController extends Controller
             return redirect()->route('course.learn', $id);
         }
 
+        // Nếu khóa học miễn phí (price = 0), đăng ký trực tiếp
+        if ($course->price == 0) {
+            try {
+                DB::table('course_enrollments')->insert([
+                    'user_id' => Auth::id(),
+                    'course_id' => $course->id,
+                    'enrolled_at' => now(),
+                    'created_at' => now(),
+                ]);
+
+                return redirect()->route('course.learn', $id)
+                    ->with('success', 'Đăng ký khóa học miễn phí thành công!');
+
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->with('error', 'Có lỗi xảy ra khi đăng ký khóa học. Vui lòng thử lại.');
+            }
+        }
+
+        // Nếu khóa học có phí, chuyển hướng đến thanh toán PayOS
         try {
             DB::beginTransaction();
 
-            // Chỉ cần tạo enrollment record trong course_enrollments
-            DB::table('course_enrollments')->insert([
+            // Tạo order
+            $order = Order::create([
                 'user_id' => Auth::id(),
-                'course_id' => $course->id,
-                'enrolled_at' => now(),
-                'created_at' => now(),
+                'total_amount' => $course->price,
+                'status' => 'pending'
             ]);
 
-            // Nếu khóa học có phí, tạo order record để theo dõi thanh toán
-            if ($course->price > 0) {
-                $order = Order::create([
-                    'user_id' => Auth::id(),
-                    'total_amount' => $course->price,
-                    'status' => 'pending', // Chờ thanh toán
-                ]);
+            // Tạo order item
+            OrderItem::create([
+                'order_id' => $order->id,
+                'course_id' => $course->id,
+                'price' => $course->price
+            ]);
 
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'course_id' => $course->id,
-                    'price' => $course->price,
-                ]);
+            // Generate unique order code
+            $orderCode = intval(substr(strval(microtime(true) * 10000), -6));
+
+            // Cập nhật order với order_code
+            $order->update(['order_code' => $orderCode]);
+
+            // Prepare payment data
+            $user = Auth::user();
+            $paymentData = [
+                'order_code' => $orderCode,
+                'amount' => (int)($course->price), // PayOS requires integer amount
+                'description' => "Thanh toan khoa hoc", // Tối đa 25 ký tự
+                'items' => [
+                    [
+                        'name' => mb_substr($course->title, 0, 20), // Giới hạn tên item
+                        'quantity' => 1,
+                        'price' => (int)($course->price)
+                    ]
+                ],
+                'buyer_name' => $user->name,
+                'buyer_email' => $user->email,
+                'expired_at' => now()->addMinutes(15)->timestamp // 15 minutes expiry
+            ];
+
+            // Create payment link
+            $result = $this->payOSService->createPaymentLink($paymentData);
+
+            if ($result['success']) {
+                DB::commit();
+                
+                // Redirect to PayOS checkout
+                return redirect($result['data']['checkoutUrl']);
+            } else {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Không thể tạo liên kết thanh toán: ' . $result['message']);
             }
-
-            DB::commit();
-
-            return redirect()->route('course.learn', $id)
-                ->with('success', 'Đăng ký khóa học thành công!');
 
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()
-                ->with('error', 'Có lỗi xảy ra khi đăng ký khóa học. Vui lòng thử lại.');
+                ->with('error', 'Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại.');
         }
     }
 

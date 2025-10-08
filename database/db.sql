@@ -66,7 +66,7 @@ CREATE TABLE order_items (
 CREATE TABLE payments (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   order_id BIGINT NOT NULL,
-  method ENUM('vnpay','momo','paypal','stripe') NOT NULL,
+  method ENUM('vnpay','momo','paypal','stripe','payos') NOT NULL,
   amount DECIMAL(10,2) NOT NULL,
   transaction_id VARCHAR(100),
   status ENUM('pending','success','failed') DEFAULT 'pending',
