@@ -129,57 +129,50 @@ class PaymentController extends Controller
         }
 
         try {
-            // Get payment info from PayOS
-            $result = $this->payOSService->getPaymentInfo($orderCode);
-
-            if ($result['success']) {
-                $paymentInfo = $result['data'];
-                
-                // Find the order
-                $order = Order::where('order_code', $orderCode)->first();
-                
-                if (!$order) {
-                    return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng');
-                }
-
-                if ($paymentInfo['status'] === 'PAID') {
-                    DB::beginTransaction();
-
-                    // Update order status
-                    $order->update(['status' => 'paid']);
-
-                    // Update payment status
-                    $payment = Payment::where('order_id', $order->id)->first();
-                    if ($payment) {
-                        $payment->update([
-                            'status' => 'success',
-                            'paid_at' => now()
-                        ]);
-                    }
-
-                    // Create course enrollment
-                    $orderItem = OrderItem::where('order_id', $order->id)->first();
-                    if ($orderItem) {
-                        DB::table('course_enrollments')->updateOrInsert([
-                            'user_id' => $order->user_id,
-                            'course_id' => $orderItem->course_id
-                        ], [
-                            'enrolled_at' => now(),
-                            'created_at' => now()
-                        ]);
-                    }
-
-                    DB::commit();
-
-                    return view('payment.success')->with('success', 'Thanh toán thành công! Bạn đã được đăng ký vào khóa học.');
-                } else {
-                    return view('payment.cancel')->with('error', 'Thanh toán chưa hoàn tất');
-                }
-            } else {
-                return redirect()->route('home')->with('error', 'Không thể xác minh thông tin thanh toán');
+            // Find the order
+            $order = Order::where('order_code', $orderCode)->first();
+            
+            if (!$order) {
+                return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng');
             }
 
+            // Check if already processed
+            if ($order->status === 'paid') {
+                return view('payment.success')->with('success', 'Đơn hàng đã được xử lý thành công trước đó!');
+            }
+
+            DB::beginTransaction();
+
+            // Update order status
+            $order->update(['status' => 'paid']);
+
+            // Update payment status
+            $payment = Payment::where('order_id', $order->id)->first();
+            if ($payment) {
+                $payment->update([
+                    'status' => 'success',
+                    'paid_at' => now()
+                ]);
+            }
+
+            // Create course enrollment
+            $orderItem = OrderItem::where('order_id', $order->id)->first();
+            if ($orderItem) {
+                DB::table('course_enrollments')->updateOrInsert([
+                    'user_id' => $order->user_id,
+                    'course_id' => $orderItem->course_id
+                ], [
+                    'enrolled_at' => now(),
+                    'created_at' => now()
+                ]);
+            }
+
+            DB::commit();
+
+            return view('payment.success')->with('success', 'Thanh toán thành công! Bạn đã được đăng ký vào khóa học.');
+
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Payment success handling error: ' . $e->getMessage());
             return redirect()->route('home')->with('error', 'Có lỗi xảy ra khi xử lý thanh toán');
         }

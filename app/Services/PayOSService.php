@@ -74,7 +74,7 @@ class PayOSService
     public function getPaymentInfo($orderCode)
     {
         try {
-            $response = $this->payOS->getPaymentLinkInfomation($orderCode);
+            $response = $this->payOS->getPaymentLinkInformation($orderCode);
             return [
                 'success' => true,
                 'data' => $response
@@ -119,7 +119,7 @@ class PayOSService
     public function verifyWebhookData($webhookData)
     {
         try {
-            $response = $this->payOS->verifyWebhookData($webhookData);
+            $response = $this->payOS->verifyPaymentWebhookData($webhookData);
             return [
                 'success' => true,
                 'data' => $response
