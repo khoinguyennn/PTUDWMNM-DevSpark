@@ -195,12 +195,14 @@
                                     <td>{{ $order->user->name ?? 'N/A' }}</td>
                                     <td>{{ number_format($order->total_amount, 0, ',', '.') }} đ</td>
                                     <td>
-                                        @if($order->status == 'completed')
-                                            <span class="badge bg-success">Hoàn thành</span>
+                                        @if($order->status == 'completed' || $order->status == 'paid')
+                                            <span class="badge bg-success">Đã thanh toán</span>
                                         @elseif($order->status == 'pending')
-                                            <span class="badge bg-warning">Chờ xử lý</span>
-                                        @else
+                                            <span class="badge bg-warning">Chờ thanh toán</span>
+                                        @elseif($order->status == 'cancelled')
                                             <span class="badge bg-danger">Đã hủy</span>
+                                        @else
+                                            <span class="badge bg-secondary">{{ ucfirst($order->status) }}</span>
                                         @endif
                                     </td>
                                     <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
