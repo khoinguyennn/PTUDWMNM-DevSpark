@@ -17,6 +17,11 @@ Route::get('/course/{id}/learn', [HomeController::class, 'learn'])->name('course
 Route::post('/course/{id}/enroll', [HomeController::class, 'enroll'])->name('course.enroll')->middleware('auth');
 Route::post('/lesson/mark-complete', [HomeController::class, 'markLessonComplete'])->name('lesson.mark-complete')->middleware('auth');
 
+// Test route for notifications
+Route::get('/test-toast', function () {
+    return redirect()->route('home')->with('success', 'Test thông báo thành công!');
+})->name('test.toast');
+
 // Payment Routes
 Route::middleware('auth')->group(function () {
     Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');

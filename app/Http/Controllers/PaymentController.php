@@ -125,7 +125,8 @@ class PaymentController extends Controller
         $orderCode = $request->get('orderCode');
         
         if (!$orderCode) {
-            return redirect()->route('home')->with('error', 'Không tìm thấy thông tin đơn hàng');
+            flash()->error('Không tìm thấy thông tin đơn hàng');
+            return redirect()->route('home');
         }
 
         try {
@@ -133,12 +134,14 @@ class PaymentController extends Controller
             $order = Order::where('order_code', $orderCode)->first();
             
             if (!$order) {
-                return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng');
+                flash()->error('Không tìm thấy đơn hàng');
+                return redirect()->route('home');
             }
 
             // Check if already processed
             if ($order->status === 'paid') {
-                return view('payment.success')->with('success', 'Đơn hàng đã được xử lý thành công trước đó!');
+                flash()->info('Đơn hàng đã được xử lý thành công trước đó!');
+                return view('payment.success');
             }
 
             DB::beginTransaction();
@@ -173,12 +176,14 @@ class PaymentController extends Controller
 
             DB::commit();
 
-            return view('payment.success', compact('course'))->with('success', 'Thanh toán thành công! Bạn đã được đăng ký vào khóa học.');
+            flash()->success('Thanh toán thành công! Bạn đã được đăng ký vào khóa học.');
+            return view('payment.success', compact('course'));
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Payment success handling error: ' . $e->getMessage());
-            return redirect()->route('home')->with('error', 'Có lỗi xảy ra khi xử lý thanh toán');
+            flash()->error('Có lỗi xảy ra khi xử lý thanh toán');
+            return redirect()->route('home');
         }
     }
 

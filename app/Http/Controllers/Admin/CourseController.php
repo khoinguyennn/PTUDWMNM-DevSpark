@@ -88,8 +88,8 @@ class CourseController extends Controller
 
         $course->delete();
 
-        return redirect()->route('admin.courses.index')
-            ->with('success', 'Khóa học đã được xóa thành công!');
+        flash()->success('Khóa học đã được xóa thành công!');
+        return redirect()->route('admin.courses.index');
     }
 
     public function show(Course $course)

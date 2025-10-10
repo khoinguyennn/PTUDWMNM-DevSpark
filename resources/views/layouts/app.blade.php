@@ -12,6 +12,86 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Toastr CSS from CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    
+    <!-- Custom Toastr styles -->
+    <style>
+        /* Force bottom right positioning for toastr */
+        #toast-container {
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 12px !important;
+            top: auto !important;
+            left: auto !important;
+            z-index: 9999 !important;
+            width: 300px !important;
+        }
+        
+        #toast-container.toast-bottom-right {
+            bottom: 20px !important;
+            right: 12px !important;
+            top: auto !important;
+            left: auto !important;
+        }
+        
+        #toast-container.toast-top-right {
+            bottom: 20px !important;
+            right: 12px !important;
+            top: auto !important;
+            left: auto !important;
+        }
+        
+        .toast-top-right {
+            top: auto !important;
+            bottom: 20px !important;
+            right: 12px !important;
+        }
+        
+        .toast-bottom-right {
+            bottom: 20px !important;
+            right: 12px !important;
+            top: auto !important;
+        }
+        
+        #toast-container > .toast-bottom-right {
+            bottom: 20px !important;
+            right: 12px !important;
+            top: auto !important;
+        }
+        
+        .toast-title {
+            font-weight: bold;
+        }
+        
+        .toast-message {
+            word-wrap: break-word;
+        }
+        
+        .toast {
+            background-color: #030303;
+            pointer-events: auto;
+            position: relative !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .toast-success {
+            background-color: #51A351;
+        }
+        
+        .toast-error {
+            background-color: #BD362F;
+        }
+        
+        .toast-info {
+            background-color: #2F96B4;
+        }
+        
+        .toast-warning {
+            background-color: #F89406;
+        }
+    </style>
 
     <style>
         :root {
@@ -873,47 +953,6 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Flash Messages -->
-        @if(session('success'))
-            <div class="container mt-3">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="container mt-3">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        @endif
-
-        @if(session('warning'))
-            <div class="container mt-3">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle me-2"></i>
-                    {{ session('warning') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        @endif
-
-        @if(session('info'))
-            <div class="container mt-3">
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="fas fa-info-circle me-2"></i>
-                    {{ session('info') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        @endif
-
         @yield('content')
     </div>
 
@@ -1046,6 +1085,125 @@
                 }
             });
         });
+    </script>
+
+    <!-- jQuery and Toastr JS from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <!-- Initialize Toastr -->
+    <script>
+        // Configure Toastr
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        // Override toastr positioning with custom function
+        var originalToastr = toastr.success;
+        toastr.success = function(message, title, options) {
+            var result = originalToastr(message, title, options);
+            setTimeout(function() {
+                $('#toast-container').attr('style', 'position: fixed !important; bottom: 20px !important; right: 12px !important; top: auto !important; z-index: 9999 !important;');
+                $('#toast-container .toast').each(function() {
+                    $(this).css({
+                        'position': 'relative',
+                        'margin-bottom': '10px'
+                    });
+                });
+            }, 10);
+            return result;
+        };
+
+        var originalToastrError = toastr.error;
+        toastr.error = function(message, title, options) {
+            var result = originalToastrError(message, title, options);
+            setTimeout(function() {
+                $('#toast-container').attr('style', 'position: fixed !important; bottom: 20px !important; right: 12px !important; top: auto !important; z-index: 9999 !important;');
+                $('#toast-container .toast').each(function() {
+                    $(this).css({
+                        'position': 'relative',
+                        'margin-bottom': '10px'
+                    });
+                });
+            }, 10);
+            return result;
+        };
+
+        var originalToastrWarning = toastr.warning;
+        toastr.warning = function(message, title, options) {
+            var result = originalToastrWarning(message, title, options);
+            setTimeout(function() {
+                $('#toast-container').attr('style', 'position: fixed !important; bottom: 20px !important; right: 12px !important; top: auto !important; z-index: 9999 !important;');
+                $('#toast-container .toast').each(function() {
+                    $(this).css({
+                        'position': 'relative',
+                        'margin-bottom': '10px'
+                    });
+                });
+            }, 10);
+            return result;
+        };
+
+        var originalToastrInfo = toastr.info;
+        toastr.info = function(message, title, options) {
+            var result = originalToastrInfo(message, title, options);
+            setTimeout(function() {
+                $('#toast-container').attr('style', 'position: fixed !important; bottom: 20px !important; right: 12px !important; top: auto !important; z-index: 9999 !important;');
+                $('#toast-container .toast').each(function() {
+                    $(this).css({
+                        'position': 'relative',
+                        'margin-bottom': '10px'
+                    });
+                });
+            }, 10);
+            return result;
+        };
+
+        // Force position override
+        $(document).ready(function() {
+            // Override toastr container positioning
+            toastr.options.positionClass = "toast-bottom-right";
+            
+            // Apply custom styles after toastr loads
+            setTimeout(function() {
+                $('#toast-container').css({
+                    'bottom': '20px',
+                    'right': '12px',
+                    'top': 'auto'
+                });
+            }, 100);
+        });
+
+        // Check for Laravel flash messages and convert to toastr
+        @if(Session::has('success'))
+            toastr.success("{{ Session::get('success') }}");
+        @endif
+
+        @if(Session::has('error'))
+            toastr.error("{{ Session::get('error') }}");
+        @endif
+
+        @if(Session::has('warning'))
+            toastr.warning("{{ Session::get('warning') }}");
+        @endif
+
+        @if(Session::has('info'))
+            toastr.info("{{ Session::get('info') }}");
+        @endif
     </script>
 
     @stack('scripts')

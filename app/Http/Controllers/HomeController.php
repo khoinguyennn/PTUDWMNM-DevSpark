@@ -150,12 +150,12 @@ class HomeController extends Controller
                     'created_at' => now(),
                 ]);
 
-                return redirect()->route('course.learn', $id)
-                    ->with('success', 'Đăng ký khóa học miễn phí thành công!');
+                flash()->success('Đăng ký khóa học miễn phí thành công!');
+                return redirect()->route('course.learn', $id);
 
             } catch (\Exception $e) {
-                return redirect()->back()
-                    ->with('error', 'Có lỗi xảy ra khi đăng ký khóa học. Vui lòng thử lại.');
+                flash()->error('Có lỗi xảy ra khi đăng ký khóa học. Vui lòng thử lại.');
+                return redirect()->back();
             }
         }
 
@@ -211,13 +211,14 @@ class HomeController extends Controller
                 return redirect($result['data']['checkoutUrl']);
             } else {
                 DB::rollBack();
-                return redirect()->back()->with('error', 'Không thể tạo liên kết thanh toán: ' . $result['message']);
+                flash()->error('Không thể tạo liên kết thanh toán: ' . $result['message']);
+                return redirect()->back();
             }
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()
-                ->with('error', 'Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại.');
+            flash()->error('Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại.');
+            return redirect()->back();
         }
     }
 

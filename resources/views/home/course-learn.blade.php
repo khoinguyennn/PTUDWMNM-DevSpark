@@ -516,15 +516,23 @@
                     currentLessonItem.querySelector('.lesson-icon').style.background = '#28a745';
                 }
                 
-                // Show success message
-                showMessage('Đã đánh dấu bài học hoàn thành!', 'success');
+                // Show success message using Toastr
+                if (typeof toastr !== 'undefined') {
+                    toastr.success('Đã đánh dấu bài học hoàn thành!');
+                } else {
+                    showMessage('Đã đánh dấu bài học hoàn thành!', 'success');
+                }
             } else {
                 throw new Error(data.message || 'Có lỗi xảy ra');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showMessage('Có lỗi xảy ra: ' + error.message, 'error');
+            if (typeof toastr !== 'undefined') {
+                toastr.error('Có lỗi xảy ra: ' + error.message);
+            } else {
+                showMessage('Có lỗi xảy ra: ' + error.message, 'error');
+            }
             
             // Reset button
             markCompleteText.textContent = 'Đánh dấu hoàn thành';
