@@ -16,7 +16,6 @@ class Order extends Model
         'user_id',
         'total_amount',
         'status',
-        'payment_method',
         'order_code',
     ];
 

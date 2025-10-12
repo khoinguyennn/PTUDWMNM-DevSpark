@@ -173,8 +173,13 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-shopping-cart me-2"></i>Đơn hàng gần đây
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fas fa-shopping-cart me-2"></i>Đơn hàng gần đây
+                    </div>
+                    <a href="{{ route('admin.orders.index') }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-eye me-1"></i>Xem tất cả
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -191,7 +196,11 @@
                             <tbody>
                                 @forelse($recent_orders as $order)
                                 <tr>
-                                    <td>#{{ $order->id }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.orders.show', $order) }}" class="text-decoration-none">
+                                            #{{ $order->order_code ?? $order->id }}
+                                        </a>
+                                    </td>
                                     <td>{{ $order->user->name ?? 'N/A' }}</td>
                                     <td>{{ number_format($order->total_amount, 0, ',', '.') }} đ</td>
                                     <td>

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OrderController;
 
 // Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -61,4 +62,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Users Management
     Route::resource('users', UserController::class);
+
+    // Orders Management
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'destroy']);
+    Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
