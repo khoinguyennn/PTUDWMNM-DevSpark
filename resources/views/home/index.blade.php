@@ -13,15 +13,46 @@
         </div>
 
         <div class="carousel-inner">
-            <!-- Slide 1: Web Development -->
+            <!-- Slide 1: ReactJS -->
             <div class="carousel-item active">
                 <div class="hero-slide slide-1">
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col-lg-6">
                                 <div class="hero-content animate-fade-in">
-                                    <h1>Trở thành Web Developer chuyên nghiệp <i class="fas fa-rocket text-warning"></i></h1>
-                                    <p>Học từ cơ bản đến nâng cao với các dự án thực tế. Được hướng dẫn bởi các chuyên gia hàng đầu trong ngành.</p>
+                                    <h1>Học ReactJS Miễn phí</h1>
+                                    <p>Khóa học ReactJS từ cơ bản đến nâng cao. Kết quả của khóa học này là bạn có thể làm hầu hết các dự án thường gặp với ReactJS</p>
+
+                                    <div class="hero-buttons">
+                                        <a href="#" class="btn btn-primary">
+                                            <i class="fas fa-play me-2"></i>Học thử miễn phí
+                                        </a>
+                                        <a href="#courses" class="btn btn-outline-light">
+                                            <i class="fas fa-graduation-cap me-2"></i>Bắt đầu học
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="hero-image text-center">
+                                    <img src="{{ asset('images/Banner_web_ReactJS.png') }}"
+                                         alt="ReactJS">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Javascript Pro -->
+            <div class="carousel-item">
+                <div class="hero-slide slide-2">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="hero-content animate-fade-in">
+                                    <h1>Mở bán khóa Javascript Pro <i class="fas fa-rocket text-warning"></i></h1>
+                                    <p>Từ ngày 17/10/2025 khóa học sẽ có giá 1.399k</p>
 
                                     <div class="hero-buttons">
                                         <a href="#" class="btn btn-primary">
@@ -35,12 +66,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="hero-image text-center">
-                                    <div class="placeholder-image d-inline-block"
-                                         style="width: 350px; height: 220px; background: rgba(255,255,255,0.15);
-                                                border-radius: 20px; display: flex; align-items: center;
-                                                justify-content: center; color: white; font-size: 3.5rem;">
-                                        <i class="fas fa-code"></i>
-                                    </div>
+                                    <img src="{{ asset('images/Banner_web_Javascript.png') }}"
+                                         alt="JavaScript Pro">
                                 </div>
                             </div>
                         </div>
@@ -48,19 +75,19 @@
                 </div>
             </div>
 
-            <!-- Slide 2: Mobile Development -->
+            <!-- Slide 3: HTML/CSS -->
             <div class="carousel-item">
-                <div class="hero-slide slide-2">
+                <div class="hero-slide slide-3">
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col-lg-6">
                                 <div class="hero-content animate-fade-in">
-                                    <h1>Phát triển ứng dụng Mobile <i class="fas fa-mobile-alt text-warning"></i></h1>
-                                    <p>Tạo ra những ứng dụng mobile đẳng cấp với React Native, Flutter và các công nghệ hàng đầu.</p>
+                                    <h1>Học HTML CSS cho người mới</h1>
+                                    <p>Thực hành dự án với Figma, hàng trăm bài tập, hướng dẫn 100% bởi chuyên gia, tặng kèm Flashcard, v.v</p>
 
                                     <div class="hero-buttons">
                                         <a href="#" class="btn btn-primary">
-                                            <i class="fas fa-download me-2"></i>Tải app demo
+                                            <i class="fas fa-play me-2"></i>Học thử miễn phí
                                         </a>
                                         <a href="#courses" class="btn btn-outline-light">
                                             <i class="fas fa-graduation-cap me-2"></i>Bắt đầu học
@@ -70,47 +97,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="hero-image text-center">
-                                    <div class="placeholder-image d-inline-block"
-                                         style="width: 350px; height: 220px; background: rgba(255,255,255,0.15);
-                                                border-radius: 20px; display: flex; align-items: center;
-                                                justify-content: center; color: white; font-size: 3.5rem;">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 3: AI & Data Science -->
-            <div class="carousel-item">
-                <div class="hero-slide slide-3">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6">
-                                <div class="hero-content animate-fade-in">
-                                    <h1>AI & Data Science cho tương lai <i class="fas fa-brain text-warning"></i></h1>
-                                    <p>Khám phá thế giới trí tuệ nhân tạo và khoa học dữ liệu với Python, Machine Learning và Deep Learning.</p>
-
-                                    <div class="hero-buttons">
-                                        <a href="#" class="btn btn-primary">
-                                            <i class="fas fa-robot me-2"></i>Thử AI Demo
-                                        </a>
-                                        <a href="#courses" class="btn btn-outline-light">
-                                            <i class="fas fa-chart-line me-2"></i>Khám phá ngay
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="hero-image text-center">
-                                    <div class="placeholder-image d-inline-block"
-                                         style="width: 350px; height: 220px; background: rgba(255,255,255,0.15);
-                                                border-radius: 20px; display: flex; align-items: center;
-                                                justify-content: center; color: white; font-size: 3.5rem;">
-                                        <i class="fas fa-brain"></i>
-                                    </div>
+                                    <img src="{{ asset('images/Banner_web_Figma.png') }}"
+                                         alt="HTML CSS">
                                 </div>
                             </div>
                         </div>
@@ -405,6 +393,14 @@
 
 @push('scripts')
 <script>
+    // Initialize carousel
+    document.addEventListener('DOMContentLoaded', function() {
+        var heroCarousel = new bootstrap.Carousel(document.getElementById('heroCarousel'), {
+            interval: 5000,
+            ride: 'carousel'
+        });
+    });
+
     // Add animation when elements come into view
     const observerOptions = {
         threshold: 0.1,
