@@ -165,13 +165,16 @@
             <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> Quản lý Người dùng
             </a>
+            <a href="{{ route('admin.enrollments.index') }}" class="{{ request()->routeIs('admin.enrollments.*') ? 'active' : '' }}">
+                <i class="fas fa-user-graduate"></i> Quản lý Ghi danh
+            </a>
             <hr style="border-color: rgba(255,255,255,0.2);">
             <a href="/">
                 <i class="fas fa-home"></i> Về trang chủ
             </a>
-            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <!-- <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fas fa-sign-out-alt"></i> Đăng xuất
-            </a>
+            </a> -->
             <form id="logout-form" action="#" method="POST" style="display: none;">
                 @csrf
             </form>
@@ -212,11 +215,11 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Flasher Toastr JS -->
     <script src="{{ asset('vendor/flasher/flasher.min.js') }}"></script>
     <script src="{{ asset('vendor/flasher/toastr.min.js') }}"></script>
-    
+
     <!-- Render Flasher notifications -->
     @flasher_render
 

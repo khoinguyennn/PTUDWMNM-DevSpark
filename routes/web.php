@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController as UserOrderController;
 
@@ -79,4 +80,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Orders Management
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'destroy']);
     Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+    // Enrollments Management
+    Route::get('enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    Route::get('enrollments/create', [EnrollmentController::class, 'create'])->name('enrollments.create');
+    Route::post('enrollments', [EnrollmentController::class, 'store'])->name('enrollments.store');
+    Route::get('enrollments/{userId}/{courseId}', [EnrollmentController::class, 'show'])->name('enrollments.show');
+    Route::delete('enrollments/{userId}/{courseId}', [EnrollmentController::class, 'destroy'])->name('enrollments.destroy');
 });

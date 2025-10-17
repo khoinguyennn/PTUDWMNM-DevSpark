@@ -63,17 +63,6 @@ CREATE TABLE order_items (
 );
 
 
-CREATE TABLE payments (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  order_id BIGINT NOT NULL,
-  method ENUM('vnpay','momo','paypal','stripe','payos') NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
-  transaction_id VARCHAR(100),
-  status ENUM('pending','success','failed') DEFAULT 'pending',
-  paid_at TIMESTAMP NULL,
-  FOREIGN KEY (order_id) REFERENCES orders(id)
-);
-
 CREATE TABLE user_progress (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   user_id BIGINT NOT NULL,
