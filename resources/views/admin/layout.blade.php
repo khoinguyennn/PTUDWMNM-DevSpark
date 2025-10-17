@@ -168,6 +168,9 @@
             <a href="{{ route('admin.enrollments.index') }}" class="{{ request()->routeIs('admin.enrollments.*') ? 'active' : '' }}">
                 <i class="fas fa-user-graduate"></i> Quản lý Ghi danh
             </a>
+            <a href="{{ route('admin.statistics.index') }}" class="{{ request()->routeIs('admin.statistics.*') ? 'active' : '' }}">
+                <i class="fas fa-chart-bar"></i> Thống kê
+            </a>
             <hr style="border-color: rgba(255,255,255,0.2);">
             <a href="/">
                 <i class="fas fa-home"></i> Về trang chủ

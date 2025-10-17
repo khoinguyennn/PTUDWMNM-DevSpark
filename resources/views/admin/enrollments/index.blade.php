@@ -9,15 +9,15 @@
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card stat-card primary">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Tổng ghi danh
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalEnrollments) }}</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-user-graduate fa-2x text-gray-300"></i>
+                    <div class="text-primary" style="font-size: 2rem; opacity: 0.3;">
+                        <i class="fas fa-user-graduate"></i>
                     </div>
                 </div>
             </div>
@@ -27,15 +27,15 @@
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card stat-card success">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Doanh thu
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($totalRevenue) }}đ</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    <div class="text-success" style="font-size: 2rem; opacity: 0.3;">
+                        <i class="fas fa-dollar-sign"></i>
                     </div>
                 </div>
             </div>
@@ -45,15 +45,15 @@
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card stat-card info">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                             Học viên duy nhất
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($uniqueStudents) }}</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                    <div class="text-info" style="font-size: 2rem; opacity: 0.3;">
+                        <i class="fas fa-users"></i>
                     </div>
                 </div>
             </div>
@@ -63,15 +63,15 @@
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card stat-card warning">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Ghi danh hôm nay
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{ number_format($todayEnrollments) }}</div>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar-day fa-2x text-gray-300"></i>
+                    <div class="text-warning" style="font-size: 2rem; opacity: 0.3;">
+                        <i class="fas fa-calendar-day"></i>
                     </div>
                 </div>
             </div>

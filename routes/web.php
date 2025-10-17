@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\EnrollmentController;
+use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController as UserOrderController;
 
@@ -56,6 +57,9 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Statistics
+    Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 
     // Courses Management
     Route::resource('courses', CourseController::class);

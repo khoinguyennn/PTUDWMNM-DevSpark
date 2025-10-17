@@ -26,7 +26,6 @@
                                         <th>Tổng tiền</th>
                                         <th>Trạng thái</th>
                                         <th>Ngày mua</th>
-                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,22 +58,6 @@
                                             <div>{{ $order->created_at->format('d/m/Y') }}</div>
                                             <small class="text-muted">{{ $order->created_at->format('H:i') }}</small>
                                         </td>
-                                        <td>
-                                            @if($order->status == 'completed' || $order->status == 'paid')
-                                                @foreach($order->orderItems as $item)
-                                                    @if($item->course)
-                                                        <a href="{{ route('course.learn', $item->course->id) }}" 
-                                                           class="btn btn-primary btn-sm mb-1">
-                                                            <i class="fas fa-play me-1"></i>Học ngay
-                                                        </a>
-                                                    @endif
-                                                @endforeach
-                                            @elseif($order->status == 'pending')
-                                                <button class="btn btn-warning btn-sm" onclick="payOrder({{ $order->id }})">
-                                                    <i class="fas fa-credit-card me-1"></i>Thanh toán
-                                                </button>
-                                            @endif
-                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -106,13 +89,6 @@
 
 @push('scripts')
 <script>
-    function payOrder(orderId) {
-        // Redirect to payment for pending orders
-        if (confirm('Bạn muốn tiếp tục thanh toán đơn hàng này?')) {
-            // You can implement payment logic here
-            // For now, just show a message
-            alert('Chức năng thanh toán sẽ được triển khai trong phiên bản tiếp theo.');
-        }
-    }
+    // Removed payOrder function since action column is no longer needed
 </script>
 @endpush
