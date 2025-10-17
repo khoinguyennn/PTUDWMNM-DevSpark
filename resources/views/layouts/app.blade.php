@@ -877,13 +877,19 @@
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('profile.show') }}">
                                         <i class="fas fa-user me-2"></i>
                                         Thông tin cá nhân
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ route('orders.history') }}">
+                                        <i class="fas fa-shopping-cart me-2"></i>
+                                        Lịch sử đơn hàng
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('profile.my-courses') }}">
                                         <i class="fas fa-book me-2"></i>
                                         Khóa học của tôi
                                     </a>

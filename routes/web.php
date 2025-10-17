@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController as UserOrderController;
 
 // Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -37,6 +39,17 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Profile Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::get('/my-courses', [ProfileController::class, 'myCourses'])->name('profile.my-courses');
+    
+    // Order History
+    Route::get('/orders/history', [UserOrderController::class, 'history'])->name('orders.history');
+});
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {

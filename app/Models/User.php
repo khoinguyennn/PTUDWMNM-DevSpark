@@ -67,4 +67,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserProgress::class);
     }
+
+    // Relationship with enrolled courses (many-to-many through course_enrollments)
+    public function enrolledCourses()
+    {
+        return $this->belongsToMany(Course::class, 'course_enrollments', 'user_id', 'course_id')
+                    ->withTimestamps();
+    }
 }
