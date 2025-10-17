@@ -90,15 +90,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="role" class="form-label">Vai trò</label>
-                                <input type="text" class="form-control" value="
-                                    @if($user->role == 'admin')
-                                        Quản trị viên
-                                    @elseif($user->role == 'instructor')
-                                        Giảng viên
-                                    @else
-                                        Học viên
-                                    @endif
-                                " readonly>
+                                <input type="text" class="form-control" value="{{ $user->role == 'admin' ? 'Quản trị viên' : ($user->role == 'instructor' ? 'Giảng viên' : 'Học viên') }}" readonly>
                             </div>
 
                             <div class="col-md-6 mb-3">
@@ -144,7 +136,6 @@
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <div class="form-text">Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số.</div>
                             </div>
 
                             <div class="col-md-4 mb-3">
