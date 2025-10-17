@@ -98,7 +98,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Tăng trưởng người dùng
+                            Tăng trưởng user
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             {{ number_format($userGrowth->sum('count')) }}
@@ -198,7 +198,7 @@
                         <span class="small">{{ $course->completion_rate ?? 0 }}%</span>
                     </div>
                     <div class="progress" style="height: 6px;">
-                        <div class="progress-bar bg-primary" 
+                        <div class="progress-bar bg-primary"
                              style="width: {{ $course->completion_rate ?? 0 }}%"></div>
                     </div>
                     <small class="text-muted">{{ $course->total_enrollments }} học viên</small>
@@ -270,7 +270,7 @@ const revenueChart = new Chart(revenueCtx, {
             data: {!! json_encode($topCourses->take(5)->pluck('total_revenue')) !!},
             backgroundColor: [
                 '#4e73df',
-                '#1cc88a', 
+                '#1cc88a',
                 '#36b9cc',
                 '#f6c23e',
                 '#e74a3b'

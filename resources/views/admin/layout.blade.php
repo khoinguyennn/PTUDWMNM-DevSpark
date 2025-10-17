@@ -191,7 +191,7 @@
             <h4 class="mb-0">@yield('page-title', 'Dashboard')</h4>
             <div>
                 <span class="me-3">
-                    <i class="far fa-user"></i> Admin
+                    <i class="far fa-user"></i> {{ auth()->user()->name }}
                 </span>
             </div>
         </div>
