@@ -5,7 +5,7 @@
 @section('content')
 <!-- Hero Banner -->
 <section class="hero-section">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
@@ -391,13 +391,136 @@
 </section>
 @endsection
 
+@push('styles')
+<style>
+    /* Hero section spacing for indicators */
+    .hero-section {
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    /* Smooth carousel transitions */
+    .carousel-inner {
+        overflow: hidden;
+    }
+
+    .carousel-item {
+        transition: transform 0.8s ease-in-out;
+    }
+
+    /* Custom slide animation */
+    .carousel-item-next,
+    .carousel-item-prev,
+    .carousel-item.active {
+        display: block;
+    }
+
+    .carousel-item-next:not(.carousel-item-start),
+    .active.carousel-item-end {
+        transform: translateX(100%);
+    }
+
+    .carousel-item-prev:not(.carousel-item-end),
+    .active.carousel-item-start {
+        transform: translateX(-100%);
+    }
+
+    /* Fade in animation for content */
+    .hero-content {
+        opacity: 0;
+        transform: translateX(-30px);
+        animation: slideInLeft 1s ease-out 0.5s forwards;
+    }
+
+    .hero-image {
+        opacity: 0;
+        transform: translateX(30px);
+        animation: slideInRight 1s ease-out 0.7s forwards;
+    }
+
+    @keyframes slideInLeft {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideInRight {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Carousel controls styling */
+    .carousel-control-prev,
+    .carousel-control-next {
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 1;
+    }
+
+    /* Carousel indicators */
+    .carousel-indicators {
+        bottom: -20px;
+        margin-bottom: 0;
+        z-index: 15;
+        position: absolute;
+    }
+    
+    .carousel-indicators [data-bs-target] {
+        transition: opacity 0.3s ease;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.4);
+        border: 2px solid white;
+        margin: 0 4px;
+    }
+    
+    .carousel-indicators [data-bs-target].active {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+</style>
+@endpush
+
 @push('scripts')
 <script>
-    // Initialize carousel
+    // Initialize carousel with smooth transitions
     document.addEventListener('DOMContentLoaded', function() {
         var heroCarousel = new bootstrap.Carousel(document.getElementById('heroCarousel'), {
-            interval: 5000,
-            ride: 'carousel'
+            interval: 4000,
+            ride: 'carousel',
+            pause: 'hover',
+            wrap: true,
+            touch: true
+        });
+
+        // Add custom slide event listeners for smooth animations
+        const carousel = document.getElementById('heroCarousel');
+        
+        carousel.addEventListener('slide.bs.carousel', function (e) {
+            // Reset animations for new slide
+            const newSlide = e.relatedTarget;
+            const heroContent = newSlide.querySelector('.hero-content');
+            const heroImage = newSlide.querySelector('.hero-image');
+            
+            if (heroContent) {
+                heroContent.style.animation = 'none';
+                heroContent.offsetHeight; // Trigger reflow
+                heroContent.style.animation = 'slideInLeft 1s ease-out 0.3s forwards';
+            }
+            
+            if (heroImage) {
+                heroImage.style.animation = 'none';
+                heroImage.offsetHeight; // Trigger reflow
+                heroImage.style.animation = 'slideInRight 1s ease-out 0.5s forwards';
+            }
         });
     });
 
