@@ -146,7 +146,7 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-warning">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-key me-1"></i>Đổi mật khẩu
                             </button>
                         </div>
