@@ -223,7 +223,7 @@
 
         @if($featuredCourses->count() > 0)
             <div class="text-center mt-4">
-                <a href="#" class="btn btn-outline-primary btn-lg">
+                <a href="{{ route('courses.all') }}" class="btn btn-outline-primary btn-lg">
                     <i class="fas fa-th-large me-2"></i>Xem tất cả khóa học
                 </a>
             </div>
@@ -300,7 +300,7 @@
 
         @if($freeCourses->count() > 0)
             <div class="text-center mt-4">
-                <a href="#" class="btn btn-outline-primary btn-lg">
+                <a href="{{ route('courses.free') }}" class="btn btn-outline-primary btn-lg">
                     <i class="fas fa-graduation-cap me-2"></i>Xem tất cả khóa học miễn phí
                 </a>
             </div>

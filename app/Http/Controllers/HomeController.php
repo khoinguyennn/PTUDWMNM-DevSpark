@@ -65,6 +65,72 @@ class HomeController extends Controller
         return view('home.index', compact('featuredCourses', 'bannerCourses', 'freeCourses'));
     }
 
+    public function allCourses(Request $request)
+    {
+        $query = $request->get('search');
+        $sort = $request->get('sort', 'latest'); // latest, oldest, price_low, price_high
+        
+        $coursesQuery = Course::with('instructor')->where('price', '>', 0);
+        
+        // Apply search filter
+        if ($query) {
+            $coursesQuery->where(function($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                  ->orWhere('description', 'LIKE', "%{$query}%");
+            });
+        }
+        
+        // Apply sorting
+        switch ($sort) {
+            case 'oldest':
+                $coursesQuery->oldest();
+                break;
+            case 'price_low':
+                $coursesQuery->orderBy('price', 'asc');
+                break;
+            case 'price_high':
+                $coursesQuery->orderBy('price', 'desc');
+                break;
+            default:
+                $coursesQuery->latest();
+                break;
+        }
+        
+        $courses = $coursesQuery->paginate(12)->appends(request()->query());
+        
+        return view('home.all-courses', compact('courses', 'query', 'sort'));
+    }
+
+    public function freeCourses(Request $request)
+    {
+        $query = $request->get('search');
+        $sort = $request->get('sort', 'latest'); // latest, oldest
+        
+        $coursesQuery = Course::with('instructor')->where('price', 0);
+        
+        // Apply search filter
+        if ($query) {
+            $coursesQuery->where(function($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                  ->orWhere('description', 'LIKE', "%{$query}%");
+            });
+        }
+        
+        // Apply sorting
+        switch ($sort) {
+            case 'oldest':
+                $coursesQuery->oldest();
+                break;
+            default:
+                $coursesQuery->latest();
+                break;
+        }
+        
+        $courses = $coursesQuery->paginate(12)->appends(request()->query());
+        
+        return view('home.free-courses', compact('courses', 'query', 'sort'));
+    }
+
     public function show($id)
     {
         $course = Course::with(['instructor', 'sections.lessons'])

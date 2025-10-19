@@ -17,6 +17,8 @@ use App\Http\Controllers\OrderController as UserOrderController;
 
 // Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/courses', [HomeController::class, 'allCourses'])->name('courses.all');
+Route::get('/free-courses', [HomeController::class, 'freeCourses'])->name('courses.free');
 Route::get('/course/{id}', [HomeController::class, 'show'])->name('course.show');
 Route::get('/course/{id}/learn', [HomeController::class, 'learn'])->name('course.learn')->middleware('auth');
 Route::post('/course/{id}/enroll', [HomeController::class, 'enroll'])->name('course.enroll')->middleware('auth');

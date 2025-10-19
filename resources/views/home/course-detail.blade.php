@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <div class="row">
         <!-- Course Content (Left Side) -->
-        <div class="col-lg-8">
+        <div class="col-lg-8 ps-4 pt-3">
             <!-- Course Header -->
             <div class="course-header mb-4">
                 <h1 class="course-title mb-3">{{ $course->title }}</h1>

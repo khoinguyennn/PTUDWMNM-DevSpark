@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Toastr CSS from CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    
+
     <!-- Custom Toastr styles -->
     <style>
         /* Force bottom right positioning for toastr */
@@ -28,66 +28,66 @@
             z-index: 9999 !important;
             width: 300px !important;
         }
-        
+
         #toast-container.toast-bottom-right {
             bottom: 20px !important;
             right: 12px !important;
             top: auto !important;
             left: auto !important;
         }
-        
+
         #toast-container.toast-top-right {
             bottom: 20px !important;
             right: 12px !important;
             top: auto !important;
             left: auto !important;
         }
-        
+
         .toast-top-right {
             top: auto !important;
             bottom: 20px !important;
             right: 12px !important;
         }
-        
+
         .toast-bottom-right {
             bottom: 20px !important;
             right: 12px !important;
             top: auto !important;
         }
-        
+
         #toast-container > .toast-bottom-right {
             bottom: 20px !important;
             right: 12px !important;
             top: auto !important;
         }
-        
+
         .toast-title {
             font-weight: bold;
         }
-        
+
         .toast-message {
             word-wrap: break-word;
         }
-        
+
         .toast {
             background-color: #030303;
             pointer-events: auto;
             position: relative !important;
             margin-bottom: 10px !important;
         }
-        
+
         .toast-success {
             background-color: #51A351;
         }
-        
+
         .toast-error {
             background-color: #BD362F;
         }
-        
+
         .toast-info {
             background-color: #2F96B4;
         }
-        
+
         .toast-warning {
             background-color: #F89406;
         }
@@ -929,7 +929,7 @@
     <div class="sidebar" id="sidebar">
         <ul class="sidebar-menu">
             <li>
-                <a href="{{ route('home') }}" class="active">
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
                     Trang chủ
                 </a>
@@ -1048,7 +1048,7 @@
         // Search functionality
         const searchInput = document.querySelector('.search-input');
         const searchForm = document.querySelector('.search-form');
-        
+
         if (searchInput && searchForm) {
             // Add loading state when searching
             searchForm.addEventListener('submit', function(e) {
@@ -1058,20 +1058,20 @@
                     toastr.warning('Vui lòng nhập ít nhất 2 ký tự để tìm kiếm');
                     return;
                 }
-                
+
                 // Add loading state
                 const submitBtn = searchForm.querySelector('.search-btn');
                 const originalIcon = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 submitBtn.disabled = true;
-                
+
                 // Reset after 3 seconds (in case of slow loading)
                 setTimeout(() => {
                     submitBtn.innerHTML = originalIcon;
                     submitBtn.disabled = false;
                 }, 3000);
             });
-            
+
             // Auto-submit when Enter is pressed
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
@@ -1136,7 +1136,7 @@
     <!-- jQuery and Toastr JS from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    
+
     <!-- Initialize Toastr -->
     <script>
         // Configure Toastr
@@ -1223,7 +1223,7 @@
         $(document).ready(function() {
             // Override toastr container positioning
             toastr.options.positionClass = "toast-bottom-right";
-            
+
             // Apply custom styles after toastr loads
             setTimeout(function() {
                 $('#toast-container').css({
