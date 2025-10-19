@@ -21,8 +21,27 @@ class HomeController extends Controller
     {
         $this->payOSService = $payOSService;
     }
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->get('search');
+        
+        // Nếu có tìm kiếm
+        if ($query) {
+            $featuredCourses = Course::with('instructor')
+                ->where(function($q) use ($query) {
+                    $q->where('title', 'LIKE', "%{$query}%")
+                      ->orWhere('description', 'LIKE', "%{$query}%");
+                })
+                ->latest()
+                ->take(12) // Hiển thị nhiều hơn khi tìm kiếm
+                ->get();
+                
+            $freeCourses = collect(); // Không hiển thị free courses khi tìm kiếm
+            $bannerCourses = collect(); // Không hiển thị banner khi tìm kiếm
+            
+            return view('home.index', compact('featuredCourses', 'bannerCourses', 'freeCourses', 'query'));
+        }
+
         // Lấy các khóa học nổi bật (có thể random hoặc theo tiêu chí)
         $featuredCourses = Course::with('instructor')
             ->where('price', '>', 0)

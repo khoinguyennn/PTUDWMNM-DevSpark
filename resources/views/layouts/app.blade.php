@@ -852,8 +852,8 @@
 
                 <!-- Center: Search Bar -->
                 <div class="search-container d-none d-md-flex flex-grow-1 justify-content-center">
-                    <form class="search-form" style="width: 100%; max-width: 500px;">
-                        <input type="text" class="search-input" placeholder="Tìm kiếm khóa học...">
+                    <form class="search-form" method="GET" action="{{ route('home') }}" style="width: 100%; max-width: 500px;">
+                        <input type="text" name="search" class="search-input" placeholder="Tìm kiếm khóa học..." value="{{ request('search') }}">
                         <button type="submit" class="search-btn">
                             <i class="fas fa-search"></i>
                         </button>
@@ -1044,6 +1044,42 @@
                 navbar.classList.remove('scrolled');
             }
         });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        const searchForm = document.querySelector('.search-form');
+        
+        if (searchInput && searchForm) {
+            // Add loading state when searching
+            searchForm.addEventListener('submit', function(e) {
+                const query = searchInput.value.trim();
+                if (query.length < 2) {
+                    e.preventDefault();
+                    toastr.warning('Vui lòng nhập ít nhất 2 ký tự để tìm kiếm');
+                    return;
+                }
+                
+                // Add loading state
+                const submitBtn = searchForm.querySelector('.search-btn');
+                const originalIcon = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                submitBtn.disabled = true;
+                
+                // Reset after 3 seconds (in case of slow loading)
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalIcon;
+                    submitBtn.disabled = false;
+                }, 3000);
+            });
+            
+            // Auto-submit when Enter is pressed
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    searchForm.submit();
+                }
+            });
+        }
 
         // Toggle sidebar on mobile
         function toggleSidebar() {

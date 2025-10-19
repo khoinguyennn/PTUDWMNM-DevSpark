@@ -4,6 +4,7 @@
 
 @section('content')
 <!-- Hero Banner -->
+@if(!isset($query) || empty($query))
 <section class="hero-section">
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
         <div class="carousel-indicators">
@@ -115,16 +116,50 @@
         </button>
     </div>
 </section>
+@endif
 
-<!-- Featured Courses Section -->
+<!-- Search Results or Featured Courses Section -->
 <section class="py-4" id="courses">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="section-title">
-                    Khóa học nổi bật
-                    <span class="badge rounded-pill" style="background: var(--primary-color); color: white; font-size: 0.6em;">MỚI</span>
-                </h2>
+                @if(isset($query) && !empty($query))
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h2 class="section-title">
+                            Kết quả tìm kiếm cho: "<span class="text-primary">{{ $query }}</span>"
+                        </h2>
+                        <a href="{{ route('home') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-times me-1"></i>Xóa tìm kiếm
+                        </a>
+                    </div>
+                    
+                    @if($featuredCourses->count() > 0)
+                        <div class="alert alert-info">
+                            <i class="fas fa-search me-2"></i>
+                            Tìm thấy <strong>{{ $featuredCourses->count() }}</strong> khóa học phù hợp
+                        </div>
+                    @else
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Không tìm thấy khóa học nào phù hợp với từ khóa "<strong>{{ $query }}</strong>"
+                        </div>
+                        <div class="text-center mt-4">
+                            <p class="text-muted">Thử tìm kiếm với từ khóa khác hoặc xem các khóa học phổ biến:</p>
+                            <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+                                <a href="{{ route('home', ['search' => 'JavaScript']) }}" class="btn btn-outline-primary btn-sm">JavaScript</a>
+                                <a href="{{ route('home', ['search' => 'HTML']) }}" class="btn btn-outline-primary btn-sm">HTML</a>
+                                <a href="{{ route('home', ['search' => 'CSS']) }}" class="btn btn-outline-primary btn-sm">CSS</a>
+                                <a href="{{ route('home', ['search' => 'React']) }}" class="btn btn-outline-primary btn-sm">React</a>
+                                <a href="{{ route('home', ['search' => 'PHP']) }}" class="btn btn-outline-primary btn-sm">PHP</a>
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    <h2 class="section-title">
+                        Khóa học nổi bật
+                        <span class="badge rounded-pill" style="background: var(--primary-color); color: white; font-size: 0.6em;">MỚI</span>
+                    </h2>
+                @endif
             </div>
         </div>
 
@@ -176,61 +211,11 @@
                     </a>
                 </div>
             @empty
-                <!-- Default courses when no data -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-1 d-flex align-items-center justify-content-center">
-                            <div class="text-white text-center">
-                                <i class="fas fa-code fa-4x mb-3"></i>
-                                <h4 class="text-white">HTML CSS</h4>
-                                <p class="text-white mb-0">Cho người mới bắt đầu</p>
-                            </div>
-                        </div>
-                        <div class="course-body">
-                            <h5 class="course-title">HTML CSS</h5>
-                            <p class="course-subtitle">Cho người mới bắt đầu</p>
-                            <div class="course-price">
-                                <span class="price-current">1.299.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-2 d-flex align-items-center justify-content-center">
-                            <div class="text-white text-center">
-                                <i class="fab fa-js-square fa-4x mb-3"></i>
-                                <h4 class="text-white">JavaScript</h4>
-                                <p class="text-white mb-0">Cho người mới bắt đầu</p>
-                            </div>
-                        </div>
-                        <div class="course-body">
-                            <h5 class="course-title">JavaScript</h5>
-                            <p class="course-subtitle">Cho người mới bắt đầu</p>
-                            <div class="course-price">
-                                <span class="price-current">1.399.000đ</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-3 d-flex align-items-center justify-content-center">
-                            <div class="text-white text-center">
-                                <i class="fab fa-sass fa-4x mb-3"></i>
-                                <h4 class="text-white">Ngôn ngữ Sass</h4>
-                                <p class="text-white mb-0">Cho Frontend Developer</p>
-                            </div>
-                        </div>
-                        <div class="course-body">
-                            <h5 class="course-title">Ngôn ngữ Sass</h5>
-                            <p class="course-subtitle">Cho Frontend Developer</p>
-                            <div class="course-price">
-                                <span class="price-current">299.000đ</span>
-                            </div>
-                        </div>
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Chưa có khóa học nào</h4>
+                        <p class="text-muted">Hiện tại chưa có khóa học nào trong hệ thống.</p>
                     </div>
                 </div>
             @endforelse
@@ -247,6 +232,7 @@
 </section>
 
 <!-- Free Courses Section -->
+@if(!isset($query) || empty($query))
 <section class="py-4" style="background-color: #f8f9fa;">
     <div class="container">
         <div class="row">
@@ -302,79 +288,11 @@
                     </a>
                 </div>
             @empty
-                <!-- Default free courses when no data -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-1 d-flex align-items-center justify-content-center">
-                            <div class="text-white text-center">
-                                <i class="fab fa-html5 fa-4x mb-3"></i>
-                                <h4 class="text-white">HTML cơ bản</h4>
-                                <p class="text-white mb-0">Khởi đầu với web</p>
-                            </div>
-                        </div>
-                        <div class="course-body">
-                            <h5 class="course-title">HTML cơ bản</h5>
-                            <p class="course-subtitle">Khởi đầu với web development</p>
-                            <div class="mb-3">
-                                <small class="text-muted">
-                                    <i class="fas fa-check-circle me-1"></i>
-                                    5 bài học cơ bản
-                                </small>
-                            </div>
-                            <div class="course-price">
-                                <span class="price-current price-free">Miễn phí</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-2 d-flex align-items-center justify-content-center">
-                            <div class="text-white text-center">
-                                <i class="fab fa-css3-alt fa-4x mb-3"></i>
-                                <h4 class="text-white">CSS cơ bản</h4>
-                                <p class="text-white mb-0">Tạo giao diện đẹp</p>
-                            </div>
-                        </div>
-                        <div class="course-body">
-                            <h5 class="course-title">CSS cơ bản</h5>
-                            <p class="course-subtitle">Tạo giao diện đẹp mắt</p>
-                            <div class="mb-3">
-                                <small class="text-muted">
-                                    <i class="fas fa-check-circle me-1"></i>
-                                    6 bài học styling
-                                </small>
-                            </div>
-                            <div class="course-price">
-                                <span class="price-current" class="price-free">Miễn phí</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="card course-card">
-                        <div class="course-image course-gradient-3 d-flex align-items-center justify-content-center">
-                            <div class="text-white text-center">
-                                <i class="fas fa-code fa-4x mb-3"></i>
-                                <h4 class="text-white">Lập trình cơ bản</h4>
-                                <p class="text-white mb-0">Tư duy lập trình</p>
-                            </div>
-                        </div>
-                        <div class="course-body">
-                            <h5 class="course-title">Lập trình cơ bản</h5>
-                            <p class="course-subtitle">Tư duy và logic lập trình</p>
-                            <div class="mb-3">
-                                <small class="text-muted">
-                                    <i class="fas fa-check-circle me-1"></i>
-                                    8 bài học tư duy
-                                </small>
-                            </div>
-                            <div class="course-price">
-                                <span class="price-current" class="price-free">Miễn phí</span>
-                            </div>
-                        </div>
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-gift fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Chưa có khóa học miễn phí</h4>
+                        <p class="text-muted">Hiện tại chưa có khóa học miễn phí nào trong hệ thống.</p>
                     </div>
                 </div>
             @endforelse
@@ -389,6 +307,7 @@
         @endif
     </div>
 </section>
+@endif
 @endsection
 
 @push('styles')
