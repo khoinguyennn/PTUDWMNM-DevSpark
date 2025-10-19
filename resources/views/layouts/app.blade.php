@@ -216,6 +216,8 @@
             flex: 1;
             max-width: 500px;
             margin: 0 20px;
+            display: flex;
+            justify-content: center;
         }
 
         .search-form {
@@ -832,23 +834,25 @@
     <!-- Header -->
     <nav class="navbar">
         <div class="container-fluid">
-            <div class="d-flex align-items-center w-100">
-                <!-- Logo -->
-                <a class="navbar-brand" href="{{ route('home') }}">
-                    <div class="logo">
-                        <img src="{{ asset('images/logo.jpg ') }}" alt="DevStark Logo">
-                    </div>
-                    DevStark
-                </a>
+            <div class="d-flex align-items-center w-100 justify-content-between">
+                <!-- Left: Logo -->
+                <div class="d-flex align-items-center">
+                    <a class="navbar-brand" href="{{ route('home') }}">
+                        <div class="logo">
+                            <img src="{{ asset('images/logo.jpg ') }}" alt="DevStark Logo">
+                        </div>
+                        DevStark
+                    </a>
 
-                <!-- Mobile menu toggle -->
-                <button class="btn mobile-menu-toggle d-md-none ms-2" type="button" onclick="toggleSidebar()">
-                    <i class="fas fa-bars"></i>
-                </button>
+                    <!-- Mobile menu toggle -->
+                    <button class="btn mobile-menu-toggle d-md-none ms-2" type="button" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
 
-                <!-- Search Bar -->
-                <div class="search-container d-none d-md-block">
-                    <form class="search-form">
+                <!-- Center: Search Bar -->
+                <div class="search-container d-none d-md-flex flex-grow-1 justify-content-center">
+                    <form class="search-form" style="width: 100%; max-width: 500px;">
                         <input type="text" class="search-input" placeholder="Tìm kiếm khóa học...">
                         <button type="submit" class="search-btn">
                             <i class="fas fa-search"></i>
@@ -856,8 +860,8 @@
                     </form>
                 </div>
 
-                <!-- User Actions -->
-                <div class="ms-auto d-flex align-items-center gap-2">
+                <!-- Right: User Actions -->
+                <div class="d-flex align-items-center gap-2">
                     @guest
                         <a href="{{ route('login') }}" class="btn btn-outline-primary">Đăng nhập</a>
                         <a href="{{ route('register') }}" class="btn btn-primary">Đăng ký</a>
