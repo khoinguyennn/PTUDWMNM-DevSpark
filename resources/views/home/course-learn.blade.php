@@ -266,7 +266,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                     <h3 class="description-title" style="margin-bottom: 0;">Về khóa học</h3>
                     @if($currentLesson)
-                        <button id="markCompleteBtn" class="btn btn-sm" 
+                        <button id="markCompleteBtn" class="btn btn-sm"
                                 style="background: {{ $isCurrentLessonCompleted ?? false ? '#28a745' : 'var(--primary-color)' }}; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem;"
                                 data-lesson-id="{{ $currentLesson->id }}"
                                 {{ $isCurrentLessonCompleted ?? false ? 'disabled' : '' }}>
@@ -308,7 +308,7 @@
                             @php
                                 $isLessonCompleted = in_array($lesson->id, $completedLessons ?? []);
                             @endphp
-                            <div class="lesson-item {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}" 
+                            <div class="lesson-item {{ $currentLesson && $currentLesson->id == $lesson->id ? 'active' : '' }}"
                                  data-lesson-id="{{ $lesson->id }}"
                                  data-video-url="{{ $lesson->youtube_url }}"
                                  data-is-completed="{{ $isLessonCompleted ? 'true' : 'false' }}"
@@ -370,7 +370,7 @@
             l.classList.remove('active');
             const icon = l.querySelector('.lesson-icon i');
             const isCompleted = l.dataset.isCompleted === 'true';
-            
+
             if (isCompleted) {
                 icon.className = 'fas fa-check';
             } else {
@@ -382,7 +382,7 @@
         lesson.classList.add('active');
         const lessonIcon = lesson.querySelector('.lesson-icon i');
         const isCompleted = lesson.dataset.isCompleted === 'true';
-        
+
         if (isCompleted) {
             lessonIcon.className = 'fas fa-check';
         } else {
@@ -403,9 +403,9 @@
                 const matches = url.match(regex);
                 return matches ? matches[1] : url; // Return the ID or original if it's already an ID
             }
-            
+
             const videoId = getYouTubeVideoId(videoUrl);
-            
+
             // Create YouTube embed
             videoPlayer.innerHTML = `
                 <iframe
@@ -433,14 +433,14 @@
     function updateMarkCompleteButton(lessonElement) {
         const markCompleteBtn = document.getElementById('markCompleteBtn');
         const markCompleteText = document.getElementById('markCompleteText');
-        
+
         if (!markCompleteBtn) return;
-        
+
         const lessonId = lessonElement.dataset.lessonId;
         const isCompleted = lessonElement.dataset.isCompleted === 'true';
-        
+
         markCompleteBtn.dataset.lessonId = lessonId;
-        
+
         if (isCompleted) {
             markCompleteBtn.style.background = '#28a745';
             markCompleteBtn.disabled = true;
@@ -457,7 +457,7 @@
             const header = firstSection.querySelector('.section-header');
             toggleSection(header);
         }
-        
+
         // Handle mark complete button
         const markCompleteBtn = document.getElementById('markCompleteBtn');
         if (markCompleteBtn) {
@@ -474,19 +474,19 @@
             alert('Không tìm thấy nút đánh dấu hoàn thành');
             return;
         }
-        
+
         const lessonId = markCompleteBtn.dataset.lessonId;
         if (!lessonId) {
             alert('Vui lòng chọn một bài học để đánh dấu hoàn thành');
             return;
         }
-        
+
         const markCompleteText = document.getElementById('markCompleteText');
-        
+
         // Disable button during request
         markCompleteBtn.disabled = true;
         markCompleteText.textContent = 'Đang xử lý...';
-        
+
         // Send AJAX request
         fetch('/lesson/mark-complete', {
             method: 'POST',
@@ -504,20 +504,20 @@
                 // Update UI
                 markCompleteText.textContent = 'Đã hoàn thành';
                 markCompleteBtn.style.background = '#28a745';
-                
+
                 // Update current lesson item
                 const currentLessonItem = document.querySelector('.lesson-item.active');
                 if (currentLessonItem) {
                     // Update data attribute
                     currentLessonItem.dataset.isCompleted = 'true';
-                    
+
                     // Update lesson icon
                     const lessonIcon = currentLessonItem.querySelector('.lesson-icon i');
                     lessonIcon.className = 'fas fa-check';
                     lessonIcon.style.color = 'white';
                     currentLessonItem.querySelector('.lesson-icon').style.background = '#28a745';
                 }
-                
+
                 // Show success message using Toastr
                 if (typeof toastr !== 'undefined') {
                     toastr.success('Đã đánh dấu bài học hoàn thành!');
@@ -535,7 +535,7 @@
             } else {
                 showMessage('Có lỗi xảy ra: ' + error.message, 'error');
             }
-            
+
             // Reset button
             markCompleteText.textContent = 'Đánh dấu hoàn thành';
             markCompleteBtn.style.background = 'var(--primary-color)';
@@ -558,9 +558,9 @@
             background: ${type === 'success' ? '#28a745' : '#dc3545'};
         `;
         messageDiv.textContent = message;
-        
+
         document.body.appendChild(messageDiv);
-        
+
         setTimeout(() => {
             messageDiv.remove();
         }, 3000);
@@ -570,7 +570,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         @if(session('enrollment_success'))
             Swal.fire({
-                title: 'Đăng ký thành công! 🎉',
+                title: 'Đăng ký thành công!',
                 text: 'Bạn đã đăng ký khóa học miễn phí thành công. Chúc bạn học tập hiệu quả!',
                 icon: 'success',
                 confirmButtonText: 'Bắt đầu học ngay!',
