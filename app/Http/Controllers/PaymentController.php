@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+
 class PaymentController extends Controller
 {
     protected $payOSService;
@@ -125,8 +126,7 @@ class PaymentController extends Controller
         $orderCode = $request->get('orderCode');
         
         if (!$orderCode) {
-            flash()->error('Không tìm thấy thông tin đơn hàng');
-            return redirect()->route('home');
+            return redirect()->route('home')->with('error', 'Không tìm thấy thông tin đơn hàng');
         }
 
         try {
@@ -134,14 +134,12 @@ class PaymentController extends Controller
             $order = Order::where('order_code', $orderCode)->first();
             
             if (!$order) {
-                flash()->error('Không tìm thấy đơn hàng');
-                return redirect()->route('home');
+                return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng');
             }
 
             // Check if already processed
             if ($order->status === 'paid') {
-                flash()->info('Đơn hàng đã được xử lý thành công trước đó!');
-                return view('payment.success');
+                return view('payment.success')->with('info', 'Đơn hàng đã được xử lý thành công trước đó!');
             }
 
             DB::beginTransaction();
@@ -176,14 +174,12 @@ class PaymentController extends Controller
 
             DB::commit();
 
-            flash()->success('Thanh toán thành công! Bạn đã được đăng ký vào khóa học.');
-            return view('payment.success', compact('course'));
+            return view('payment.success', compact('course'))->with('payment_success', true);
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Payment success handling error: ' . $e->getMessage());
-            flash()->error('Có lỗi xảy ra khi xử lý thanh toán');
-            return redirect()->route('home');
+            return redirect()->route('home')->with('error', 'Có lỗi xảy ra khi xử lý thanh toán. Vui lòng liên hệ hỗ trợ.');
         }
     }
 

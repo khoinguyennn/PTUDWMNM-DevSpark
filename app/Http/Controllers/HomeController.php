@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class HomeController extends Controller
 {
     protected $payOSService;
@@ -235,12 +236,10 @@ class HomeController extends Controller
                     'created_at' => now(),
                 ]);
 
-                flash()->success('Đăng ký khóa học miễn phí thành công!');
-                return redirect()->route('course.learn', $id);
+                return redirect()->route('course.learn', $id)->with('enrollment_success', true);
 
             } catch (\Exception $e) {
-                flash()->error('Có lỗi xảy ra khi đăng ký khóa học. Vui lòng thử lại.');
-                return redirect()->back();
+                return redirect()->back()->with('error', 'Có lỗi xảy ra khi đăng ký khóa học. Vui lòng thử lại.');
             }
         }
 
@@ -296,14 +295,13 @@ class HomeController extends Controller
                 return redirect($result['data']['checkoutUrl']);
             } else {
                 DB::rollBack();
-                flash()->error('Không thể tạo liên kết thanh toán: ' . $result['message']);
+                return redirect()->back()->with('error', 'Không thể tạo liên kết thanh toán: ' . $result['message']);
                 return redirect()->back();
             }
 
         } catch (\Exception $e) {
             DB::rollBack();
-            flash()->error('Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại.');
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Có lỗi xảy ra khi tạo thanh toán. Vui lòng thử lại.');
         }
     }
 

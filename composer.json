@@ -10,6 +10,7 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "payos/payos": "^1.0",
+        "realrashid/sweet-alert": "^7.3",
         "yoeunes/toastr": "^3.1"
     },
     "require-dev": {

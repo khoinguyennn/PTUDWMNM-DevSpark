@@ -206,6 +206,8 @@
             height: 40vh;
         }
     }
+
+
 </style>
 @endpush
 
@@ -563,5 +565,28 @@
             messageDiv.remove();
         }, 3000);
     }
+
+    // Check if user just enrolled (for free course success alert)
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('enrollment_success'))
+            Swal.fire({
+                title: 'Đăng ký thành công! 🎉',
+                text: 'Bạn đã đăng ký khóa học miễn phí thành công. Chúc bạn học tập hiệu quả!',
+                icon: 'success',
+                confirmButtonText: 'Bắt đầu học ngay!',
+                confirmButtonColor: '#28a745',
+                showCancelButton: false,
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Focus on the first lesson or scroll to video player
+                    const videoPlayer = document.querySelector('.video-player');
+                    if (videoPlayer) {
+                        videoPlayer.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        @endif
+    });
 </script>
 @endpush

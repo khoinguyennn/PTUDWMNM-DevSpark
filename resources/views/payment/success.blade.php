@@ -41,3 +41,33 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    @if(session('payment_success'))
+        // Auto-trigger SweetAlert for payment success
+        Swal.fire({
+            title: 'Thanh toán thành công! 🎉',
+            text: 'Bạn đã được đăng ký vào khóa học thành công. Chúc bạn học tập hiệu quả!',
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonText: '{{ isset($course) && $course ? "Học ngay" : "Về trang chủ" }}',
+            confirmButtonColor: '#0BBAF4',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                @if(isset($course) && $course)
+                    window.location.href = "{{ route('course.learn', $course->id ?? '') }}";
+                @else
+                    window.location.href = "{{ route('home') }}";
+                @endif
+            }
+        });
+    @endif
+});
+</script>
+
+
+@endpush

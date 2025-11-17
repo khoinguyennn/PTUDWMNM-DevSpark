@@ -149,14 +149,14 @@
 
                     @auth
                         <!-- Already enrolled button/redirect happens in controller -->
-                        <form action="{{ route('course.enroll', $course->id) }}" method="POST">
+                        <form action="{{ route('course.enroll', $course->id) }}" method="POST" id="enrollForm">
                             @csrf
                             @if($course->price > 0)
-                                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                <button type="button" class="btn btn-primary btn-lg w-100 mb-3" onclick="confirmPayment()">
                                     <i class="fas fa-credit-card me-2"></i>THANH TOÁN & HỌC NGAY
                                 </button>
                             @else
-                                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                <button type="button" class="btn btn-primary btn-lg w-100 mb-3" onclick="confirmFreeEnroll()">
                                     <i class="fas fa-graduation-cap me-2"></i>ĐĂNG KÝ HỌC MIỄN PHÍ
                                 </button>
                             @endif
@@ -319,5 +319,101 @@ function toggleAllSections() {
         toggleText.textContent = 'Thu gọn tất cả';
     }
 }
+
+// SweetAlert confirmation functions
+function confirmPayment() {
+    Swal.fire({
+        title: 'Xác nhận thanh toán',
+        html: `
+            <div class="text-start">
+                <p class="mb-3"><strong>Khóa học:</strong> {{ $course->title }}</p>
+                <p class="mb-3"><strong>Giá:</strong> <span class="text-primary fw-bold">{{ number_format($course->price, 0, ',', '.') }}đ</span></p>
+                <p class="mb-3"><strong>Tổng bài học:</strong> {{ $totalLessons }} bài</p>
+                <p class="mb-0"><strong>Thời lượng:</strong> {{ gmdate('H \g\i\ờ i \p\h\ú\t', $totalDuration * 60) }}</p>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-credit-card me-2"></i>Thanh toán ngay',
+        cancelButtonText: '<i class="fas fa-times me-2"></i>Hủy bỏ',
+        confirmButtonColor: '#0BBAF4',
+        cancelButtonColor: '#6c757d',
+        customClass: {
+            popup: 'payment-confirm-popup'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát',
+                icon: 'info',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Submit form
+            document.getElementById('enrollForm').submit();
+        }
+    });
+}
+
+function confirmFreeEnroll() {
+    Swal.fire({
+        title: 'Đăng ký khóa học miễn phí',
+        html: `
+            <div class="text-start">
+                <p class="mb-3"><strong>Khóa học:</strong> {{ $course->title }}</p>
+                <p class="mb-3"><strong>Giá:</strong> <span class="text-success fw-bold">Miễn phí</span></p>
+                <p class="mb-3"><strong>Tổng bài học:</strong> {{ $totalLessons }} bài</p>
+                <p class="mb-0"><strong>Thời lượng:</strong> {{ gmdate('H \g\i\ờ i \p\h\ú\t', $totalDuration * 60) }}</p>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-graduation-cap me-2"></i>Đăng ký ngay',
+        cancelButtonText: '<i class="fas fa-times me-2"></i>Hủy bỏ',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        customClass: {
+            popup: 'free-enroll-popup'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát',
+                icon: 'info',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Submit form
+            document.getElementById('enrollForm').submit();
+        }
+    });
+}
 </script>
+
+<style>
+.payment-confirm-popup .swal2-html-container,
+.free-enroll-popup .swal2-html-container {
+    text-align: left !important;
+}
+
+.payment-confirm-popup .swal2-title,
+.free-enroll-popup .swal2-title {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+</style>
 @endsection
