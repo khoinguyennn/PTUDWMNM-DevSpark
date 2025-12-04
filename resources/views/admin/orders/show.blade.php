@@ -89,8 +89,8 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            @if($item->course && $item->course->image)
-                                                <img src="{{ asset('storage/' . $item->course->image) }}"
+                                            @if($item->course && $item->course->thumbnail)
+                                                <img src="{{ asset('storage/' . $item->course->thumbnail) }}"
                                                      alt="{{ $item->course->title }}"
                                                      class="rounded me-3" style="width: 60px; height: 40px; object-fit: cover;">
                                             @else
@@ -151,12 +151,12 @@
                 </div>
                 <div class="card-body">
                     @if($order->user)
-                        <div class="text-center mb-3">
+                        <!-- <div class="text-center mb-3">
                             <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center"
                                  style="width: 80px; height: 80px;">
                                 <i class="fas fa-user text-white fa-2x"></i>
                             </div>
-                        </div>
+                        </div> -->
 
                         <table class="table table-borderless">
                             <tr>

@@ -4,59 +4,9 @@
 
 @section('content')
 <div class="container py-5">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-lg-3 mb-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                         style="width: 80px; height: 80px;">
-                        <i class="fas fa-user text-white fa-2x"></i>
-                    </div>
-                    <h5 class="card-title">{{ $user->name }}</h5>
-                    <p class="card-text text-muted">{{ $user->email }}</p>
-                    <span class="badge bg-success">
-                        @if($user->role == 'admin')
-                            Quản trị viên
-                        @elseif($user->role == 'instructor')
-                            Giảng viên
-                        @else
-                            Học viên
-                        @endif
-                    </span>
-                </div>
-            </div>
-
-            <!-- Statistics -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Thống kê</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-12 mb-3">
-                            <div class="border-bottom pb-2">
-                                <h4 class="text-primary mb-0">{{ $enrolledCoursesCount }}</h4>
-                                <small class="text-muted">Khóa học đã đăng ký</small>
-                            </div>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <div class="border-bottom pb-2">
-                                <h4 class="text-success mb-0">{{ $ordersCount }}</h4>
-                                <small class="text-muted">Đơn hàng thành công</small>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <h4 class="text-info mb-0">{{ number_format($totalSpent, 0, ',', '.') }} đ</h4>
-                            <small class="text-muted">Tổng chi tiêu</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <div class="row justify-content-center">
         <!-- Main Content -->
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             <!-- Profile Information -->
             <div class="card mb-4">
                 <div class="card-header">

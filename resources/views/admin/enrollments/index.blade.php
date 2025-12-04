@@ -193,9 +193,60 @@
             </div>
 
             <!-- Pagination -->
-            <div class="d-flex justify-content-center mt-4">
-                {{ $enrollments->appends(request()->query())->links() }}
-            </div>
+            @if($enrollments->hasPages())
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="text-muted">
+                        Hiển thị {{ $enrollments->firstItem() }} đến {{ $enrollments->lastItem() }} 
+                        trong tổng số {{ $enrollments->total() }} kết quả
+                    </div>
+                    <nav aria-label="Phân trang ghi danh">
+                        <ul class="pagination pagination-sm mb-0">
+                            {{-- Previous Page Link --}}
+                            @if ($enrollments->onFirstPage())
+                                <li class="page-item disabled"><span class="page-link">‹ Trước</span></li>
+                            @else
+                                <li class="page-item"><a class="page-link" href="{{ $enrollments->appends(request()->query())->previousPageUrl() }}">‹ Trước</a></li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @php
+                                $start = max($enrollments->currentPage() - 2, 1);
+                                $end = min($start + 4, $enrollments->lastPage());
+                                $start = max($end - 4, 1);
+                            @endphp
+
+                            @if($start > 1)
+                                <li class="page-item"><a class="page-link" href="{{ $enrollments->appends(request()->query())->url(1) }}">1</a></li>
+                                @if($start > 2)
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                @endif
+                            @endif
+
+                            @for ($i = $start; $i <= $end; $i++)
+                                @if ($i == $enrollments->currentPage())
+                                    <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+                                @else
+                                    <li class="page-item"><a class="page-link" href="{{ $enrollments->appends(request()->query())->url($i) }}">{{ $i }}</a></li>
+                                @endif
+                            @endfor
+
+                            @if($end < $enrollments->lastPage())
+                                @if($end < $enrollments->lastPage() - 1)
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                @endif
+                                <li class="page-item"><a class="page-link" href="{{ $enrollments->appends(request()->query())->url($enrollments->lastPage()) }}">{{ $enrollments->lastPage() }}</a></li>
+                            @endif
+
+                            {{-- Next Page Link --}}
+                            @if ($enrollments->hasMorePages())
+                                <li class="page-item"><a class="page-link" href="{{ $enrollments->appends(request()->query())->nextPageUrl() }}">Tiếp ›</a></li>
+                            @else
+                                <li class="page-item disabled"><span class="page-link">Tiếp ›</span></li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            @endif
         @else
             <div class="text-center py-5">
                 <i class="fas fa-user-graduate fa-3x text-muted mb-3"></i>

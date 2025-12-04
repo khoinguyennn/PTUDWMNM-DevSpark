@@ -183,9 +183,9 @@
                     <a href="{{ route('admin.courses.show', $courseId) }}" class="btn btn-primary">
                         <i class="fas fa-book"></i> Xem khóa học
                     </a>
-                    <a href="{{ route('admin.users.show', $enrollment->id) }}" class="btn btn-info">
+                    <!-- <a href="{{ route('admin.users.show', $enrollment->id) }}" class="btn btn-info">
                         <i class="fas fa-user"></i> Xem hồ sơ học viên
-                    </a>
+                    </a> -->
                     <button type="button" class="btn btn-danger" onclick="confirmDelete()">
                         <i class="fas fa-trash"></i> Hủy ghi danh
                     </button>
