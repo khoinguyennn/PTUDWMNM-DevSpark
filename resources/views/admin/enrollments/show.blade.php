@@ -46,12 +46,18 @@
                                 <td>{{ Str::limit($enrollment->course_description, 100) }}</td>
                             </tr>
                             <tr>
-                                <td><strong>Giá gốc:</strong></td>
-                                <td><span class="badge bg-info">{{ number_format($enrollment->course_price) }}đ</span></td>
+                                <td><strong>Giá khóa học:</strong></td>
+                                <td>
+                                    @if($enrollment->course_price > 0)
+                                        <span class="badge bg-info">{{ number_format($enrollment->course_price) }}đ</span>
+                                    @else
+                                        <span class="badge bg-success">Miễn phí</span>
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
-                                <td><strong>Đã thanh toán:</strong></td>
-                                <td><span class="badge bg-success">{{ number_format($enrollment->paid_price) }}đ</span></td>
+                                <td><strong>Giảng viên:</strong></td>
+                                <td>{{ $enrollment->instructor_name ?? 'Chưa có thông tin' }}</td>
                             </tr>
                         </table>
                     </div>
@@ -59,34 +65,40 @@
             </div>
         </div>
 
-        <!-- Order Information -->
+        <!-- Enrollment Information -->
         <div class="card mb-4">
             <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">Thông tin Đơn hàng</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Thông tin Ghi Danh</h6>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
                         <table class="table table-borderless">
                             <tr>
-                                <td width="40%"><strong>Mã đơn hàng:</strong></td>
-                                <td>{{ $enrollment->order_id }}</td>
+                                <td width="40%"><strong>Ngày ghi danh:</strong></td>
+                                <td>{{ \Carbon\Carbon::parse($enrollment->enrollment_date)->format('d/m/Y H:i') }}</td>
                             </tr>
                             <tr>
-                                <td><strong>Ngày ghi danh:</strong></td>
-                                <td>{{ \Carbon\Carbon::parse($enrollment->enrollment_date)->format('d/m/Y H:i') }}</td>
+                                <td><strong>Loại ghi danh:</strong></td>
+                                <td>
+                                    @if($enrollment->course_price > 0)
+                                        <span class="badge bg-warning">Có phí</span>
+                                    @else
+                                        <span class="badge bg-success">Miễn phí</span>
+                                    @endif
+                                </td>
                             </tr>
                         </table>
                     </div>
                     <div class="col-md-6">
                         <table class="table table-borderless">
                             <tr>
-                                <td width="40%"><strong>Tổng tiền:</strong></td>
-                                <td><span class="badge bg-primary">{{ number_format($enrollment->total_amount) }}đ</span></td>
+                                <td width="40%"><strong>Mã ghi danh:</strong></td>
+                                <td><code>#{{ $enrollment->enrollment_id }}</code></td>
                             </tr>
                             <tr>
                                 <td><strong>Trạng thái:</strong></td>
-                                <td><span class="badge bg-success">Đã hoàn thành</span></td>
+                                <td><span class="badge bg-success">Đang hoạt động</span></td>
                             </tr>
                         </table>
                     </div>
@@ -120,7 +132,7 @@
                                 <td width="50%"><strong>Tiến độ:</strong></td>
                                 <td>
                                     <div class="progress" style="height: 25px;">
-                                        <div class="progress-bar" 
+                                        <div class="progress-bar"
                                              style="width: {{ $progress->progress_percentage }}%">
                                             {{ $progress->progress_percentage }}%
                                         </div>
@@ -129,7 +141,13 @@
                             </tr>
                             <tr>
                                 <td><strong>Cập nhật cuối:</strong></td>
-                                <td>{{ \Carbon\Carbon::parse($progress->updated_at)->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    @if($progress->last_completed_at)
+                                        {{ \Carbon\Carbon::parse($progress->last_completed_at)->format('d/m/Y H:i') }}
+                                    @else
+                                        Chưa có dữ liệu
+                                    @endif
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -162,8 +180,8 @@
                     <a href="{{ route('admin.enrollments.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Quay lại danh sách
                     </a>
-                    <a href="{{ route('admin.orders.show', $enrollment->order_id) }}" class="btn btn-primary">
-                        <i class="fas fa-receipt"></i> Xem đơn hàng
+                    <a href="{{ route('admin.courses.show', $courseId) }}" class="btn btn-primary">
+                        <i class="fas fa-book"></i> Xem khóa học
                     </a>
                     <a href="{{ route('admin.users.show', $enrollment->id) }}" class="btn btn-info">
                         <i class="fas fa-user"></i> Xem hồ sơ học viên
@@ -189,14 +207,18 @@
                             {{ \Carbon\Carbon::parse($enrollment->enrollment_date)->diffForHumans() }}
                         </p>
                     </div>
-                    
+
                     @if($progress)
                     <hr>
                     <div class="mb-3">
                         <i class="fas fa-chart-line fa-2x text-success mb-2"></i>
                         <h6>Hoạt động học tập</h6>
                         <p class="text-muted mb-0">
-                            Cập nhật {{ \Carbon\Carbon::parse($progress->updated_at)->diffForHumans() }}
+                            @if($progress->last_completed_at)
+                                Cập nhật {{ \Carbon\Carbon::parse($progress->last_completed_at)->diffForHumans() }}
+                            @else
+                                Chưa có hoạt động
+                            @endif
                         </p>
                     </div>
                     @endif
@@ -215,13 +237,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Bạn có chắc chắn muốn hủy ghi danh của <strong>{{ $enrollment->name }}</strong> 
+                <p>Bạn có chắc chắn muốn hủy ghi danh của <strong>{{ $enrollment->name }}</strong>
                    cho khóa học <strong>{{ $enrollment->course_title }}</strong>?</p>
                 <p class="text-danger"><strong>Lưu ý:</strong> Hành động này sẽ xóa toàn bộ tiến độ học tập của học viên!</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <form action="{{ route('admin.enrollments.destroy', [$enrollment->id, request()->route('courseId')]) }}" 
+                <form action="{{ route('admin.enrollments.destroy', [$enrollment->id, request()->route('courseId')]) }}"
                       method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')

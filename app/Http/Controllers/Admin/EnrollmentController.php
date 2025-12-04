@@ -49,7 +49,7 @@ class EnrollmentController extends Controller
         if ($request->filled('date_from')) {
             $query->whereDate('course_enrollments.enrolled_at', '>=', $request->get('date_from'));
         }
-        
+
         if ($request->filled('date_to')) {
             $query->whereDate('course_enrollments.enrolled_at', '<=', $request->get('date_to'));
         }
@@ -81,11 +81,11 @@ class EnrollmentController extends Controller
             ->count();
 
         return view('admin.enrollments.index', compact(
-            'enrollments', 
-            'courses', 
-            'totalEnrollments', 
-            'totalRevenue', 
-            'uniqueStudents', 
+            'enrollments',
+            'courses',
+            'totalEnrollments',
+            'totalRevenue',
+            'uniqueStudents',
             'todayEnrollments'
         ));
     }
@@ -94,7 +94,7 @@ class EnrollmentController extends Controller
     {
         $users = User::where('role', 'student')->orderBy('name')->get();
         $courses = Course::orderBy('title')->get();
-        
+
         return view('admin.enrollments.create', compact('users', 'courses'));
     }
 
@@ -174,17 +174,17 @@ class EnrollmentController extends Controller
             ->where('sections.course_id', $courseId)
             ->selectRaw('
                 COUNT(*) as completed_lessons,
-                (SELECT COUNT(*) FROM lessons 
-                 JOIN sections ON lessons.section_id = sections.id 
+                (SELECT COUNT(*) FROM lessons
+                 JOIN sections ON lessons.section_id = sections.id
                  WHERE sections.course_id = ?) as total_lessons,
-                ROUND((COUNT(*) * 100.0 / (SELECT COUNT(*) FROM lessons 
-                       JOIN sections ON lessons.section_id = sections.id 
+                ROUND((COUNT(*) * 100.0 / (SELECT COUNT(*) FROM lessons
+                       JOIN sections ON lessons.section_id = sections.id
                        WHERE sections.course_id = ?)), 2) as progress_percentage,
-                MAX(user_progress.updated_at) as updated_at
+                MAX(user_progress.completed_at) as last_completed_at
             ', [$courseId, $courseId])
             ->first();
 
-        return view('admin.enrollments.show', compact('enrollment', 'progress'));
+        return view('admin.enrollments.show', compact('enrollment', 'progress', 'courseId', 'userId'));
     }
 
     public function destroy($userId, $courseId)
