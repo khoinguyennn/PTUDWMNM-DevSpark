@@ -937,25 +937,25 @@
                 </a>
             </li>
             <li>
-                <a href="#roadmap">
+                <a href="{{ route('learning-path') }}" class="{{ request()->routeIs('learning-path') ? 'active' : '' }}">
                     <i class="fas fa-road"></i>
                     Lộ trình
                 </a>
             </li>
             <li>
-                <a href="#articles">
+                <a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'active' : '' }}">
                     <i class="fas fa-newspaper"></i>
                     Bài viết
                 </a>
             </li>
             <li>
-                <a href="#about">
+                <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">
                     <i class="fas fa-info-circle"></i>
                     Giới thiệu
                 </a>
             </li>
             <li>
-                <a href="#contact">
+                <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">
                     <i class="fas fa-phone"></i>
                     Liên hệ
                 </a>
@@ -1002,10 +1002,10 @@
                 <div class="col-md-2 mb-3">
                     <h5>Hỗ trợ</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#">Trung tâm trợ giúp</a></li>
+                        <li><a href="{{ route('about') }}">Giới thiệu</a></li>
+                        <li><a href="{{ route('blog.index') }}">Blog</a></li>
+                        <li><a href="{{ route('contact') }}">Liên hệ</a></li>
                         <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                        <li><a href="#">Blog</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 mb-3">
